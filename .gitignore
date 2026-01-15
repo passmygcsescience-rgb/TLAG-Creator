@@ -20,7 +20,9 @@ __pycache__/
 
 # Output files (generated lessons)
 output/
-*.pptx
+output/*.pptx
+# Keep template files
+!templates/
 
 # Mac files
 .DS_Store
