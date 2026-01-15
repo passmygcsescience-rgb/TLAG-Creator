@@ -43,13 +43,26 @@ CHEMISTRY_LESSONS = {
                     ]
                 },
                 "i_do": {
-                    "title": "Modelling Atomic Structure",
+                    "title": "Atomic Structure",
                     "content": [
-                        "Draw a simple atom diagram on the board",
-                        "Label the nucleus, protons (+), neutrons (0), electrons (-)",
-                        "Explain: protons and neutrons are in the nucleus, electrons orbit around",
-                        "Key point: atoms are neutral because protons = electrons",
-                        "Show the difference between an element (one type) and a compound (bonded different types)"
+                        "All substances are made of atoms - the smallest particle of an element",
+                        "Atoms contain a nucleus at the centre made of protons and neutrons",
+                        "Electrons orbit the nucleus in shells (energy levels)",
+                        "Protons have a +1 charge, neutrons have no charge (0), electrons have a -1 charge",
+                        "Atoms are neutral because the number of protons equals the number of electrons"
+                    ],
+                    "definitions": {
+                        "Atom": "The smallest particle of an element that can exist",
+                        "Element": "A substance made of only one type of atom",
+                        "Compound": "Two or more different types of atoms chemically bonded together",
+                        "Nucleus": "The centre of an atom containing protons and neutrons"
+                    },
+                    "facts": [
+                        "Protons have a relative mass of 1 and a charge of +1",
+                        "Neutrons have a relative mass of 1 and a charge of 0",
+                        "Electrons have a negligible mass and a charge of -1",
+                        "The atomic number = number of protons",
+                        "The mass number = protons + neutrons"
                     ]
                 },
                 "we_do": {
@@ -118,13 +131,37 @@ CHEMISTRY_LESSONS = {
                     ]
                 },
                 "i_do": {
-                    "title": "Drawing Electronic Structures",
+                    "title": "Electronic Structure",
                     "content": [
-                        "Draw sodium (atomic number 11): 2.8.1",
+                        "Electrons are arranged in shells (energy levels) around the nucleus",
+                        "The first shell can hold up to 2 electrons",
+                        "The second and third shells can hold up to 8 electrons each",
+                        "Electrons always fill the lowest energy shell first",
+                        "The electronic structure is written as numbers separated by dots (e.g., 2.8.1)"
+                    ],
+                    "definitions": {
+                        "Shell": "An energy level around the nucleus where electrons are found",
+                        "Electronic structure": "The arrangement of electrons in an atom",
+                        "Outer electrons": "Electrons in the outermost shell, which determine chemical properties"
+                    },
+                    "facts": [
                         "First shell: maximum 2 electrons",
                         "Second shell: maximum 8 electrons",
-                        "Third shell: remaining electrons (11 - 2 - 8 = 1)",
-                        "Link to periodic table: Group 1 = 1 outer electron"
+                        "Third shell: maximum 8 electrons (at GCSE level)",
+                        "The number of outer electrons = the group number (for Groups 1-7)",
+                        "The number of shells = the period number"
+                    ],
+                    "examples": [
+                        {
+                            "problem": "Sodium has atomic number 11 - what is its electronic structure?",
+                            "steps": [
+                                "11 electrons total (atomic number = electrons)",
+                                "First shell: 2 electrons",
+                                "Second shell: 8 electrons",
+                                "Third shell: 11 - 2 - 8 = 1 electron"
+                            ],
+                            "answer": "2.8.1"
+                        }
                     ]
                 },
                 "we_do": {
@@ -200,13 +237,26 @@ CHEMISTRY_LESSONS = {
                     ]
                 },
                 "i_do": {
-                    "title": "Understanding the Periodic Table Organisation",
+                    "title": "The Periodic Table",
                     "content": [
-                        "Show how Mendeleev's table left gaps - predict germanium",
-                        "Explain groups: vertical, same outer electrons, similar properties",
-                        "Explain periods: horizontal, same number of shells",
-                        "Demonstrate: Group 1 all have 1 outer electron",
-                        "Key insight: atomic number determines position, not mass"
+                        "The periodic table organises all known elements based on their atomic number",
+                        "Elements are arranged in rows (periods) and columns (groups)",
+                        "Groups are vertical columns - elements in the same group have similar properties",
+                        "Periods are horizontal rows - elements in the same period have the same number of electron shells",
+                        "Elements in the same group have the same number of outer electrons"
+                    ],
+                    "definitions": {
+                        "Group": "A vertical column of elements with similar properties",
+                        "Period": "A horizontal row of elements with the same number of electron shells",
+                        "Atomic number": "The number of protons in an atom - determines position in the periodic table"
+                    },
+                    "facts": [
+                        "Mendeleev arranged elements by atomic mass and left gaps for undiscovered elements",
+                        "Mendeleev predicted the properties of 'missing' elements - later discovered!",
+                        "The modern periodic table arranges elements by atomic number, not mass",
+                        "Group 1 elements have 1 outer electron",
+                        "Group 7 elements have 7 outer electrons",
+                        "Group 0 elements have full outer shells (8, or 2 for helium)"
                     ]
                 },
                 "we_do": {
@@ -275,13 +325,38 @@ CHEMISTRY_LESSONS = {
                     ]
                 },
                 "i_do": {
-                    "title": "Group 1 Reactions with Water",
+                    "title": "Group 1 - The Alkali Metals",
                     "content": [
-                        "Demo/video: lithium in water - floats, fizzes gently",
-                        "Demo/video: sodium in water - floats, fizzes, melts into ball",
-                        "Demo/video: potassium in water - floats, fizzes violently, lilac flame",
-                        "Word equation: sodium + water → sodium hydroxide + hydrogen",
-                        "Explain trend: larger atoms lose outer electron more easily"
+                        "The alkali metals are lithium (Li), sodium (Na), and potassium (K)",
+                        "They are soft metals that can be cut with a knife",
+                        "They have low density - lithium, sodium, and potassium float on water",
+                        "They react vigorously with water to produce hydrogen gas and a metal hydroxide",
+                        "Reactivity INCREASES down the group"
+                    ],
+                    "definitions": {
+                        "Alkali metal": "A Group 1 metal that reacts with water to form an alkaline solution",
+                        "Hydroxide": "A compound containing the OH⁻ ion, produced when alkali metals react with water"
+                    },
+                    "facts": [
+                        "All Group 1 metals have 1 electron in their outer shell",
+                        "They lose this electron easily to form +1 ions",
+                        "Lithium fizzes gently in water",
+                        "Sodium melts into a ball and fizzes rapidly",
+                        "Potassium ignites with a lilac flame"
+                    ],
+                    "examples": [
+                        {
+                            "problem": "Word equation for sodium reacting with water",
+                            "answer": "sodium + water → sodium hydroxide + hydrogen"
+                        },
+                        {
+                            "problem": "Symbol equation for potassium reacting with water",
+                            "answer": "2K + 2H₂O → 2KOH + H₂"
+                        }
+                    ],
+                    "key_points": [
+                        "Reactivity increases down the group because the outer electron is further from the nucleus",
+                        "Further from nucleus = weaker attraction = easier to lose"
                     ]
                 },
                 "we_do": {
@@ -350,13 +425,31 @@ CHEMISTRY_LESSONS = {
                     ]
                 },
                 "i_do": {
-                    "title": "Halogen Displacement Reactions",
+                    "title": "Group 7 - The Halogens",
                     "content": [
-                        "Show halogen colours: Cl₂ (green-yellow gas), Br₂ (red-brown liquid), I₂ (grey solid)",
-                        "Explain: halogens want to GAIN 1 electron (opposite to Group 1)",
-                        "Smaller atoms attract electrons more strongly = more reactive",
-                        "Displacement: chlorine + potassium bromide → potassium chloride + bromine",
-                        "Cl₂ + 2KBr → 2KCl + Br₂ (solution turns orange-brown)"
+                        "The halogens are fluorine (F₂), chlorine (Cl₂), bromine (Br₂), and iodine (I₂)",
+                        "They all exist as diatomic molecules - two atoms bonded together",
+                        "Halogens have 7 electrons in their outer shell and want to GAIN 1 more",
+                        "Reactivity DECREASES down the group (opposite to Group 1)",
+                        "A more reactive halogen can displace a less reactive halide from solution"
+                    ],
+                    "definitions": {
+                        "Halogen": "A Group 7 element that forms salts when combined with metals",
+                        "Diatomic": "A molecule made of two atoms (e.g., Cl₂, Br₂)",
+                        "Displacement": "When a more reactive element takes the place of a less reactive one"
+                    },
+                    "facts": [
+                        "Chlorine (Cl₂) is a green-yellow gas",
+                        "Bromine (Br₂) is a red-brown liquid",
+                        "Iodine (I₂) is a grey solid that sublimes to purple vapour",
+                        "Halogens form -1 ions called halide ions (Cl⁻, Br⁻, I⁻)",
+                        "Reactivity decreases because larger atoms attract electrons less strongly"
+                    ],
+                    "examples": [
+                        {
+                            "problem": "Chlorine + potassium bromide → ?",
+                            "answer": "potassium chloride + bromine (Cl₂ + 2KBr → 2KCl + Br₂)"
+                        }
                     ]
                 },
                 "we_do": {
