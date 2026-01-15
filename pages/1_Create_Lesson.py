@@ -1,6 +1,6 @@
 """
 Page 1: Create Lesson
-Enter lesson details and generate initial content
+Streamlined lesson creation using pre-made TLAG lessons
 """
 import streamlit as st
 import sys
@@ -13,7 +13,6 @@ from core.curriculum_data import AQA_GCSE_CURRICULA, get_topics_list, get_subtop
 from core.chemistry_lessons import get_lesson_content as get_chemistry_lesson, get_available_lessons as get_chemistry_available, CHEMISTRY_LESSONS
 from core.science_lessons import BIOLOGY_LESSONS, PHYSICS_LESSONS, get_biology_lesson, get_physics_lesson, get_available_biology_lessons, get_available_physics_lessons
 from core.expanded_lessons import EXPANDED_LESSONS, get_expanded_lesson
-from core.lesson_generator import generate_lesson_content
 from core.aqa_curriculum import get_curriculum, get_practicals, get_related_practicals
 
 
@@ -45,25 +44,125 @@ def get_lesson_data(subject: str, subtopic_id: str, lesson_num: int) -> dict:
     return None
 
 
-st.set_page_config(page_title="Create Lesson", page_icon="📝", layout="wide")
+# Page configuration
+st.set_page_config(
+    page_title="Create Lesson | GEMS TLAG",
+    page_icon="📝",
+    layout="wide"
+)
 
-st.markdown("# 📝 Create New Lesson")
-st.markdown("Select your curriculum topic and generate a complete TLAG lesson.")
+# Custom CSS for better styling
+st.markdown("""
+<style>
+    /* Main container styling */
+    .main .block-container {
+        padding-top: 2rem;
+        max-width: 1200px;
+    }
+    
+    /* Header styling */
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+    
+    /* Card styling */
+    .lesson-card {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-left: 4px solid #667eea;
+    }
+    
+    /* Success message styling */
+    .success-banner {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        text-align: center;
+        margin: 1rem 0;
+    }
+    
+    /* Button improvements */
+    .stButton > button {
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    /* Selectbox styling */
+    .stSelectbox > div > div {
+        border-radius: 8px;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    
+    /* Hide sidebar by default for cleaner look */
+    [data-testid="stSidebar"] {
+        min-width: 0;
+    }
+    
+    /* Step indicators */
+    .step-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Initialize session state
 if 'lesson_data' not in st.session_state:
     st.session_state.lesson_data = {}
 
-# Curriculum Browser Section
-st.markdown("## 📚 Curriculum Browser")
+# ============================================================================
+# HEADER
+# ============================================================================
+st.markdown('<p class="main-title">📝 Create Your TLAG Lesson</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Select a topic and generate a complete PowerPoint in seconds!</p>', unsafe_allow_html=True)
+
+# ============================================================================
+# STEP 1: SELECT TOPIC
+# ============================================================================
+st.markdown("### <span class='step-number'>1</span> Choose Your Topic", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
     subject = st.selectbox(
-        "Subject",
+        "🔬 Subject",
         ["Chemistry", "Biology", "Physics"],
-        index=0
+        index=0,
+        help="Select your science subject"
     )
 
 # Get topics for selected subject
@@ -73,8 +172,9 @@ topic_options = {f"{k}: {v['name']}": k for k, v in topics.items()}
 
 with col2:
     selected_topic = st.selectbox(
-        "Topic",
-        list(topic_options.keys()) if topic_options else ["No topics available"]
+        "📖 Topic",
+        list(topic_options.keys()) if topic_options else ["No topics available"],
+        help="Select the main topic area"
     )
 
 # Get subtopics for selected topic
@@ -84,89 +184,96 @@ subtopic_options = {f"{k}: {v['name']}": k for k, v in subtopics.items()}
 
 with col3:
     selected_subtopic = st.selectbox(
-        "Subtopic",
-        list(subtopic_options.keys()) if subtopic_options else ["No subtopics available"]
+        "📚 Subtopic",
+        list(subtopic_options.keys()) if subtopic_options else ["No subtopics available"],
+        help="Select the specific subtopic"
     )
 
-# Show content preview
+# Get subtopic details
 subtopic_id = subtopic_options.get(selected_subtopic) if subtopic_options else None
 content_points = get_subtopic_content(subject, topic_id, subtopic_id) if subtopic_id else []
 
+# Optional: Show specification content
 if content_points:
-    with st.expander("📋 Specification Content Preview", expanded=False):
+    with st.expander("📋 View Specification Content", expanded=False):
         for point in content_points:
             st.markdown(f"• {point}")
 
-# Check for pre-made lessons (works for all subjects)
-available_lessons = get_all_available_lessons(subject, subtopic_id) if subtopic_id else []
-
-# Also check for related practicals
+# Show related practicals if any
 related_practicals = get_related_practicals(subject, topic_id) if topic_id else []
 if related_practicals:
     with st.expander(f"🔬 Related Required Practicals ({len(related_practicals)})", expanded=False):
         for p in related_practicals:
             st.markdown(f"**{p['name']}**: {p['description']}")
 
+st.markdown("---")
+
+# ============================================================================
+# STEP 2: SELECT LESSON
+# ============================================================================
+st.markdown("### <span class='step-number'>2</span> Select a Lesson", unsafe_allow_html=True)
+
+# Check for available lessons
+available_lessons = get_all_available_lessons(subject, subtopic_id) if subtopic_id else []
+
 if available_lessons:
-    st.success(f"✅ {len(available_lessons)} pre-made lesson(s) ready for this subtopic!")
+    # Success banner
+    st.markdown(f"""
+    <div class="success-banner">
+        ✅ {len(available_lessons)} ready-made lesson(s) available for this topic!
+    </div>
+    """, unsafe_allow_html=True)
     
     lesson_options = [f"Lesson {l['number']}: {l['title']}" for l in available_lessons]
-    selected_lesson = st.selectbox("📚 Select Lesson", lesson_options)
+    selected_lesson = st.selectbox(
+        "📚 Choose a lesson",
+        lesson_options,
+        help="Select which lesson you want to generate"
+    )
     
     lesson_num = int(selected_lesson.split(":")[0].replace("Lesson ", ""))
     lesson_data = get_lesson_data(subject, subtopic_id, lesson_num)
     
     if lesson_data:
-        # Preview in expander
-        with st.expander("📋 Lesson Preview", expanded=True):
-            st.markdown(f"**Learning Outcome:** {lesson_data.get('learning_outcome', 'N/A')}")
-            st.markdown("**To Know:**")
-            for i, item in enumerate(lesson_data.get('to_know', [])[:3], 1):
-                st.markdown(f"  {i}. {item}")
-            st.markdown("  ...")
-            st.markdown(f"**Do Now Questions:** {len(lesson_data.get('do_now', {}).get('questions', []))} questions ready")
-            st.markdown(f"**Differentiation:** Bronze, Silver, Gold tasks included")
+        # Lesson preview card
+        st.markdown("#### 📋 Lesson Preview")
+        
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            st.markdown(f"**🎯 Learning Outcome:**")
+            st.info(lesson_data.get('learning_outcome', 'N/A'))
+            
+            st.markdown("**🧠 Key Knowledge (To Know):**")
+            to_know_items = lesson_data.get('to_know', [])[:4]
+            for i, item in enumerate(to_know_items, 1):
+                st.markdown(f"{i}. {item}")
+            if len(lesson_data.get('to_know', [])) > 4:
+                st.caption(f"...and {len(lesson_data.get('to_know', [])) - 4} more items")
+        
+        with col2:
+            st.markdown("**📊 Lesson Includes:**")
+            st.markdown(f"✅ {len(lesson_data.get('do_now', {}).get('questions', []))} Do Now questions")
+            st.markdown("✅ I Do demonstration")
+            st.markdown("✅ We Do practice")
+            st.markdown("✅ You Do tasks (Bronze/Silver/Gold)")
+            st.markdown("✅ Exit Ticket")
         
         st.markdown("---")
         
-        col1, col2 = st.columns(2)
+        # ============================================================================
+        # STEP 3: GENERATE POWERPOINT
+        # ============================================================================
+        st.markdown("### <span class='step-number'>3</span> Generate PowerPoint", unsafe_allow_html=True)
         
-        with col1:
-            if st.button("📝 Edit Before Export", use_container_width=True):
-                # Load into session and go to edit page
-                st.session_state.lesson_data = {
-                    'subject': subject,
-                    'curriculum': f"AQA GCSE ({curriculum_data.get('code', '')})",
-                    'topic': lesson_data.get('title', ''),
-                    'topic_id': topic_id,
-                    'subtopic_id': subtopic_id,
-                    'lesson_number': lesson_data.get('lesson_number', 1),
-                    'unit': topics.get(topic_id, {}).get("name", ""),
-                    'year_group': "Year 10",
-                    'do_now_questions': lesson_data.get('do_now', {}).get('questions', []),
-                    'do_now_answers': lesson_data.get('do_now', {}).get('answers', []),
-                    'learning_outcome': lesson_data.get('learning_outcome', ''),
-                    'to_know': lesson_data.get('to_know', []),
-                    'content_points': content_points,
-                    'i_do_title': lesson_data.get('i_do', {}).get('title', ''),
-                    'i_do_content': '\n'.join(lesson_data.get('i_do', {}).get('content', [])),
-                    'we_do_question': lesson_data.get('we_do', {}).get('question', ''),
-                    'we_do_steps': '\n'.join(['• ' + s for s in lesson_data.get('we_do', {}).get('steps', [])]),
-                    'you_do_tasks': lesson_data.get('you_do', []),
-                    'exam_question': '',
-                    'mark_scheme': '',
-                    'exit_question': lesson_data.get('exit_ticket', {}).get('question', ''),
-                    'exit_options': '\n'.join(lesson_data.get('exit_ticket', {}).get('options', [])),
-                    'exit_answer': lesson_data.get('exit_ticket', {}).get('answer', '')
-                }
-                st.switch_page("pages/2_Edit_Content.py")
+        col1, col2, col3 = st.columns([1, 2, 1])
         
         with col2:
-            if st.button("🚀 Generate PowerPoint Now", type="primary", use_container_width=True):
-                with st.spinner("⏳ Generating PowerPoint..."):
+            if st.button("🚀 Generate PowerPoint", type="primary", use_container_width=True):
+                with st.spinner("⏳ Creating your PowerPoint... Please wait..."):
                     try:
                         from core.pptx_builder import TLAGPowerPointBuilder
-                        import os
+                        import io
                         
                         # Template path
                         template_path = "templates/WSO Learn Like A GEM Template (1).pptx"
@@ -229,20 +336,19 @@ if available_lessons:
                         )
                         
                         # Generate filename
-                        filename = f"Lesson_{lesson_data.get('lesson_number', 1)}_{lesson_data.get('title', 'Untitled').replace(' ', '_')}.pptx"
+                        filename = f"Lesson_{lesson_data.get('lesson_number', 1)}_{lesson_data.get('title', 'Untitled').replace(' ', '_').replace(',', '')}.pptx"
                         
-                        # Save to a BytesIO buffer for download
-                        import io
+                        # Save to buffer
                         buffer = io.BytesIO()
                         builder.prs.save(buffer)
                         buffer.seek(0)
                         
-                        st.success(f"✅ PowerPoint generated!")
+                        st.success("✅ Your PowerPoint is ready!")
                         st.balloons()
                         
-                        # Provide download button
+                        # Download button
                         st.download_button(
-                            label="📥 Download PowerPoint",
+                            label="📥 Download Your PowerPoint",
                             data=buffer,
                             file_name=filename,
                             mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -251,208 +357,43 @@ if available_lessons:
                         )
                         
                     except Exception as e:
-                        st.error(f"❌ Error: {str(e)}")
+                        st.error(f"❌ Error generating PowerPoint: {str(e)}")
                         import traceback
-                        st.code(traceback.format_exc())
+                        with st.expander("🔧 Error Details"):
+                            st.code(traceback.format_exc())
 
 else:
-    st.warning("⚠️ No pre-made lessons for this subtopic. Use AI Generator below or manual entry.")
+    # No lessons available message
+    st.warning("""
+    ⚠️ **No pre-made lessons available for this subtopic yet.**
+    
+    We're constantly adding new lessons! In the meantime, try:
+    - Selecting a different subtopic
+    - Check back soon for updates
+    """)
 
+# ============================================================================
+# FOOTER
+# ============================================================================
 st.markdown("---")
 
-# AI Lesson Generation Section
-st.markdown("## 🤖 AI Lesson Generator")
-st.markdown("Generate a complete TLAG lesson using AI based on the selected topic.")
+# Quick tips
+with st.expander("💡 Tips for Great Lessons", expanded=False):
+    st.markdown("""
+    **Using Your Downloaded PowerPoint:**
+    1. Open the PowerPoint in Microsoft PowerPoint or Google Slides
+    2. Add your own images and diagrams to slides
+    3. Customize the Bronze/Silver/Gold tasks for your class
+    4. Add any additional worked examples you need
+    
+    **The TLAG Structure:**
+    - 🕰️ **Do Now** - Retrieval practice (5 mins)
+    - 🎯 **Learning Outcome** - Clear success criteria
+    - 🧠 **To Know** - Key knowledge points
+    - 👁️ **I Do** - Teacher demonstration
+    - 🤝 **We Do** - Guided practice
+    - ✏️ **You Do** - Independent practice
+    - 🎟️ **Exit Ticket** - Check understanding
+    """)
 
-# API Key - check secrets first (for cloud), then allow manual input
-with st.sidebar:
-    st.markdown("### 🔑 OpenAI API Key")
-    
-    # Check if running on Streamlit Cloud with secrets configured
-    api_key = None
-    if hasattr(st, 'secrets') and 'OPENAI_API_KEY' in st.secrets:
-        api_key = st.secrets['OPENAI_API_KEY']
-        st.success("✅ API key configured (from secrets)")
-    else:
-        api_key = st.text_input("Enter your API key", type="password", 
-                               help="Required for AI lesson generation")
-        if api_key:
-            st.success("✅ API key configured")
-
-# Get subtopic name for display
-subtopic_name = subtopics.get(subtopic_id, {}).get("name", "Unknown") if subtopic_id else "Unknown"
-topic_name = topics.get(topic_id, {}).get("name", "Unknown") if topic_id else "Unknown"
-
-col1, col2 = st.columns([3, 1])
-
-with col1:
-    st.info(f"**Ready to generate:** {subject} → {topic_name} → {subtopic_name}")
-
-with col2:
-    generate_clicked = st.button("🚀 Generate with AI", type="primary", use_container_width=True)
-
-if generate_clicked:
-    if not api_key:
-        st.error("❌ Please enter your OpenAI API key in the sidebar first.")
-    elif not subtopic_id:
-        st.error("❌ Please select a subtopic first.")
-    else:
-        with st.spinner("🤖 Generating lesson content with AI... This may take 30-60 seconds."):
-            result = generate_lesson_content(
-                subject=subject,
-                topic=topic_name,
-                subtopic=subtopic_name,
-                spec_content=content_points,
-                api_key=api_key
-            )
-            
-            if result.get("success"):
-                lesson = result.get("lesson", {})
-                
-                # Build session state from AI response
-                st.session_state.lesson_data = {
-                    'subject': subject,
-                    'curriculum': f"AQA GCSE ({curriculum_data.get('code', '')})",
-                    'topic': subtopic_name,
-                    'topic_id': topic_id,
-                    'subtopic_id': subtopic_id,
-                    'lesson_number': 1,
-                    'unit': topic_name,
-                    'year_group': "Year 10",
-                    'do_now_questions': lesson.get('do_now', {}).get('questions', []),
-                    'do_now_answers': lesson.get('do_now', {}).get('answers', []),
-                    'learning_outcome': lesson.get('learning_outcome', ''),
-                    'to_know': lesson.get('to_know', []),
-                    'content_points': content_points,
-                    'i_do_title': lesson.get('i_do', {}).get('title', ''),
-                    'i_do_content': '\n'.join(lesson.get('i_do', {}).get('content', [])),
-                    'we_do_question': lesson.get('we_do', {}).get('question', ''),
-                    'we_do_steps': '\n'.join(['• ' + s for s in lesson.get('we_do', {}).get('steps', [])]),
-                    'you_do_tasks': lesson.get('you_do', []),
-                    'exam_question': '',
-                    'mark_scheme': '',
-                    'exit_question': lesson.get('exit_ticket', {}).get('question', ''),
-                    'exit_options': '\n'.join(lesson.get('exit_ticket', {}).get('options', [])),
-                    'exit_answer': lesson.get('exit_ticket', {}).get('answer', '')
-                }
-                
-                st.success("✅ Lesson generated successfully!")
-                st.balloons()
-                
-                # Show preview
-                with st.expander("📋 Preview Generated Content", expanded=True):
-                    st.markdown(f"**Learning Outcome:** {lesson.get('learning_outcome', 'N/A')}")
-                    st.markdown("**To Know:**")
-                    for i, item in enumerate(lesson.get('to_know', []), 1):
-                        st.markdown(f"{i}. {item}")
-                
-                if st.button("✏️ Edit & Export Lesson", type="primary"):
-                    st.switch_page("pages/2_Edit_Content.py")
-            else:
-                st.error(f"❌ Error generating lesson: {result.get('error', 'Unknown error')}")
-
-st.markdown("---")
-
-# Lesson Details Form
-st.markdown("## 📝 Lesson Details (Manual Entry)")
-
-with st.form("lesson_form"):
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        lesson_number = st.number_input(
-            "Lesson Number",
-            min_value=1,
-            max_value=100,
-            value=1
-        )
-        
-        # Get topic name from selection
-        topic_name = subtopics.get(subtopic_id, {}).get("name", "") if subtopic_id else ""
-        topic = st.text_input(
-            "Lesson Topic",
-            value=topic_name,
-            placeholder="e.g., Titration Calculations"
-        )
-    
-    with col2:
-        unit = topics.get(topic_id, {}).get("name", "") if topic_id else ""
-        unit_display = st.text_input(
-            "Unit/Chapter",
-            value=unit,
-            placeholder="e.g., Quantitative Chemistry"
-        )
-        
-        year_group = st.selectbox(
-            "Year Group",
-            ["Year 10", "Year 11", "Year 12", "Year 13"],
-            index=0
-        )
-    
-    st.markdown("---")
-    st.markdown("### 📌 Do Now Questions (Retrieval Practice)")
-    st.caption("Enter 3-5 questions based on PRIOR learning (not new content)")
-    
-    do_now_questions = []
-    do_now_answers = []
-    
-    for i in range(5):
-        cols = st.columns([3, 1])
-        with cols[0]:
-            q = st.text_input(f"Question {i+1}", key=f"q_{i}", placeholder="Enter question...")
-        with cols[1]:
-            a = st.text_input(f"Answer", key=f"a_{i}", placeholder="Answer")
-        if q:
-            do_now_questions.append(q)
-            do_now_answers.append(a)
-    
-    st.markdown("---")
-    st.markdown("### 🎯 Learning Outcome")
-    st.caption("ONE precise skill-based outcome (not activities)")
-    
-    learning_outcome = st.text_area(
-        "Learning Outcome",
-        placeholder="e.g., Calculate the unknown concentration of a solution using titration results and balanced symbol equations.",
-        label_visibility="collapsed"
-    )
-    
-    st.markdown("---")
-    st.markdown("### 🧠 To Know (Substantive Knowledge)")
-    st.caption("Essential facts/concepts needed to achieve the outcome")
-    
-    # Pre-fill with content points if available
-    to_know = []
-    for i in range(5):
-        default_value = content_points[i] if i < len(content_points) else ""
-        tk = st.text_input(f"To Know {i+1}", key=f"tk_{i}", value=default_value, placeholder=f"Knowledge point {i+1}...")
-        if tk:
-            to_know.append(tk)
-    
-    submitted = st.form_submit_button("📝 Save & Continue", type="primary", use_container_width=True)
-
-if submitted:
-    if not topic:
-        st.error("Please enter a topic")
-    elif not learning_outcome:
-        st.error("Please enter a learning outcome")
-    elif len(do_now_questions) < 3:
-        st.error("Please enter at least 3 Do Now questions")
-    else:
-        # Save to session state
-        st.session_state.lesson_data = {
-            'subject': subject,
-            'curriculum': f"AQA GCSE ({curriculum_data.get('code', '')})",
-            'topic': topic,
-            'topic_id': topic_id,
-            'subtopic_id': subtopic_id,
-            'lesson_number': lesson_number,
-            'unit': unit_display,
-            'year_group': year_group,
-            'do_now_questions': do_now_questions,
-            'do_now_answers': do_now_answers,
-            'learning_outcome': learning_outcome,
-            'to_know': to_know,
-            'content_points': content_points
-        }
-        st.success("✅ Lesson details saved!")
-        st.switch_page("pages/2_Edit_Content.py")
+st.caption("Built with ❤️ for GEMS Education Teachers")
