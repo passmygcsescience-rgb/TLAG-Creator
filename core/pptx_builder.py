@@ -323,16 +323,18 @@ class TLAGPowerPointBuilder:
         return self
     
     def add_i_do_slides(self, i_do_data: dict):
-        """Add I Do slides with proper layout and images."""
+        """Add I Do slides with INFORMATION-BASED content for teacher modelling."""
         title = i_do_data.get("title", "Teacher Modelling")
         content_list = i_do_data.get("content", [])
         examples = i_do_data.get("examples", [])
         key_points = i_do_data.get("key_points", [])
+        definitions = i_do_data.get("definitions", {})
+        facts = i_do_data.get("facts", [])
         
         # Find image based on title
         image_path = self._find_image_for_text(title + " " + " ".join(content_list[:3]))
         
-        # ===== SLIDE 1: I DO OVERVIEW =====
+        # ===== SLIDE 1: I DO - INFORMATION SLIDE =====
         slide1 = self._add_slide("I_DO")
         
         # Determine text width based on whether we have an image
@@ -340,15 +342,15 @@ class TLAGPowerPointBuilder:
         
         tf1 = self._create_text_box(slide1, 0.5, 1.3, text_width, 5.7)
         content1 = [
-            ("👨‍🏫 I DO: " + title, True, self.PURPLE),
-            ("\n", False, None),
-            ("\n📋 Key Concepts:", True, None)
+            (title, True, self.PURPLE),
+            ("\n", False, None)
         ]
         
-        for i, item in enumerate(content_list[:6], 1):  # Limit to 6 items
+        # Add main content as educational information
+        for item in content_list[:6]:  # Limit to 6 items
             # Truncate if too long
             display_item = item[:120] + "..." if len(item) > 120 else item
-            content1.append((f"\n  {i}. {display_item}", False, None))
+            content1.append((f"\n• {display_item}", False, None))
         
         self._add_text_content(tf1, content1, font_size=16)
         
@@ -356,15 +358,50 @@ class TLAGPowerPointBuilder:
         if image_path:
             self._add_image_to_slide(slide1, image_path, left=9.0, top=1.2, width=3.8)
         
-        # ===== SLIDE 2: WORKED EXAMPLE (if available) =====
+        # ===== SLIDE 2: KEY DEFINITIONS (if available) =====
+        if definitions:
+            slide_def = self._add_slide("I_DO")
+            tf_def = self._create_text_box(slide_def, 0.5, 1.3, 12.0, 5.7)
+            
+            content_def = [("Key Definitions", True, self.PURPLE), ("\n", False, None)]
+            
+            for term, definition in list(definitions.items())[:5]:  # Max 5 definitions
+                term_text = str(term)[:40]
+                def_text = str(definition)[:150]
+                content_def.append((f"\n{term_text}: ", True, self.BLUE))
+                content_def.append((def_text, False, None))
+            
+            self._add_text_content(tf_def, content_def, font_size=16)
+        
+        # ===== SLIDE 3: KEY FACTS (if available) =====
+        if facts:
+            slide_facts = self._add_slide("I_DO")
+            image_path2 = self._find_image_for_text(" ".join(facts[:2]))
+            text_width2 = 8.0 if image_path2 else 12.0
+            
+            tf_facts = self._create_text_box(slide_facts, 0.5, 1.3, text_width2, 5.7)
+            
+            content_facts = [("Key Facts to Remember", True, self.PURPLE), ("\n", False, None)]
+            
+            for fact in facts[:6]:  # Max 6 facts
+                fact_text = fact[:120] + "..." if len(fact) > 120 else fact
+                content_facts.append((f"\n✓ {fact_text}", False, None))
+            
+            self._add_text_content(tf_facts, content_facts, font_size=16)
+            
+            if image_path2:
+                self._add_image_to_slide(slide_facts, image_path2, left=9.0, top=1.5, width=3.5)
+        
+        # ===== SLIDE 4: WORKED EXAMPLE (if available) =====
         if examples:
             slide2 = self._add_slide("I_DO")
             tf2 = self._create_text_box(slide2, 0.5, 1.3, 12.0, 5.7)
             
-            content2 = [("👨‍🏫 I DO: Worked Example", True, self.PURPLE), ("\n", False, None)]
+            content2 = [("Worked Example", True, self.PURPLE), ("\n", False, None)]
             
             for i, example in enumerate(examples[:2], 1):  # Max 2 examples
-                content2.append((f"\n📝 Example {i}: {example.get('problem', '')}", True, None))
+                problem = example.get('problem', example.get('question', ''))
+                content2.append((f"\n{problem}", True, None))
                 
                 steps = example.get('steps', [])[:5]  # Max 5 steps
                 for j, step in enumerate(steps, 1):
@@ -378,18 +415,16 @@ class TLAGPowerPointBuilder:
             
             self._add_text_content(tf2, content2, font_size=15)
         
-        # ===== SLIDE 3: KEY POINTS (if available) =====
+        # ===== SLIDE 5: KEY POINTS SUMMARY (if available) =====
         if key_points:
             slide3 = self._add_slide("I_DO")
             tf3 = self._create_text_box(slide3, 0.5, 1.3, 8.0, 5.7)
             
-            content3 = [("👨‍🏫 I DO: Key Points", True, self.PURPLE), ("\n", False, None)]
+            content3 = [("Remember These Key Points", True, self.PURPLE), ("\n", False, None)]
             
             for point in key_points[:6]:  # Max 6 points
                 point_text = point[:100] + "..." if len(point) > 100 else point
-                content3.append((f"\n✨ {point_text}", False, None))
-            
-            content3.append(("\n\n🔔 Cold Call: Be ready to answer!", True, self.ORANGE))
+                content3.append((f"\n★ {point_text}", False, None))
             
             self._add_text_content(tf3, content3, font_size=17)
             
