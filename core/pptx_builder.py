@@ -13,15 +13,40 @@ from io import BytesIO
 class TLAGPowerPointBuilder:
     """Builds TLAG-compliant PowerPoint presentations with images."""
     
-    # Template layouts
+    # Template layouts (matching the TLAG template slide master)
+    # Layout indices based on order in template:
+    # Row 1: Title Slide, Do Now, Learning Outcomes, I Do We Do You Do, I Do
+    # Row 2: We Do, You Do, Affirmative Checking, Exit Tickets, Empty
+    # Row 3: Empty with Header, Turn Talk, Show Call, Show Me, Everybody Writes
+    # Row 4: Cold Call, Right is Right, Stretch It, Habits of Discussion, What to Do
+    # Row 5: Whole Class Reset, Teacher Radar, Secure Student attention, Blank
     LAYOUTS = {
+        # Core TLAG slides
+        "TITLE": 0,
         "DO_NOW": 1,
         "OUTCOMES": 2,
+        "I_DO_WE_DO_YOU_DO": 3,
         "I_DO": 4,
         "WE_DO": 5,
         "YOU_DO": 6,
-        "CHECK": 7,
-        "EXIT": 8
+        "CHECK": 7,              # Affirmative Checking
+        "EXIT": 8,               # Exit Tickets
+        "EMPTY": 9,
+        # TLAG Techniques
+        "EMPTY_HEADER": 10,
+        "TURN_TALK": 11,         # Turn and Talk
+        "SHOW_CALL": 12,
+        "SHOW_ME": 13,
+        "EVERYBODY_WRITES": 14,
+        "COLD_CALL": 15,
+        "RIGHT_IS_RIGHT": 16,
+        "STRETCH_IT": 17,
+        "HABITS_DISCUSSION": 18,
+        "WHAT_TO_DO": 19,
+        "WHOLE_CLASS_RESET": 20,
+        "TEACHER_RADAR": 21,
+        "SECURE_ATTENTION": 22,
+        "BLANK": 23
     }
     
     # Colors
@@ -255,8 +280,7 @@ class TLAGPowerPointBuilder:
         tf = self._create_text_box(slide, 0.5, 1.3, 8.5, 5.7)
         
         content = [
-            ("🕰️ DO NOW", True, self.BLUE),
-            ("\nComplete in silence (6 minutes)", False, self.GRAY),
+            ("Complete in silence (6 minutes)", False, self.GRAY),
             ("\n", False, None)
         ]
         
@@ -282,18 +306,13 @@ class TLAGPowerPointBuilder:
         # Left column - Learning Outcome
         tf_left = self._create_text_box(slide, 0.5, 1.3, 6.0, 5.7)
         content_left = [
-            ("🎯 LEARNING OUTCOME", True, self.BLUE),
-            ("\n", False, None),
-            (f"\n{outcome}", False, None)
+            (f"{outcome}", False, None)
         ]
         self._add_text_content(tf_left, content_left, font_size=20)
         
         # Right column - To Know
         tf_right = self._create_text_box(slide, 6.8, 1.3, 6.0, 5.7)
-        content_right = [
-            ("🧠 TO KNOW", True, self.PURPLE),
-            ("\n", False, None)
-        ]
+        content_right = []
         for i, item in enumerate(to_know[:8], 1):  # Limit to 8 items
             # Truncate long items
             display_item = item[:100] + "..." if len(item) > 100 else item
@@ -389,7 +408,7 @@ class TLAGPowerPointBuilder:
         return self
     
     def add_we_do_slides(self, we_do_data: dict):
-        """Add We Do slides - FIXED LAYOUT."""
+        """Add We Do slides - Uses template layouts including TURN_TALK."""
         examples = we_do_data.get("examples", [])
         
         # Convert legacy format
@@ -404,21 +423,17 @@ class TLAGPowerPointBuilder:
         combined_text = " ".join([e.get("question", "") for e in examples])
         image_path = self._find_image_for_text(combined_text)
         
-        # ===== SLIDE 1: WE DO OVERVIEW =====
+        # ===== SLIDE 1: WE DO OVERVIEW (uses WE_DO template) =====
         slide1 = self._add_slide("WE_DO")
         text_width = 8.0 if image_path else 12.0
         
         tf1 = self._create_text_box(slide1, 0.5, 1.3, text_width, 5.7)
-        content1 = [
-            ("👥 WE DO: Guided Practice", True, self.BLUE),
-            ("\n🗣️ Turn and Talk with your partner", True, self.ORANGE),
-            ("\n", False, None)
-        ]
+        content1 = []
         
         if examples:
             ex = examples[0]
             q_text = ex.get('question', '')[:150]
-            content1.append((f"\n📝 {q_text}", True, None))
+            content1.append((f"📝 {q_text}", True, None))
             
             for i, step in enumerate(ex.get('steps', [])[:5], 1):
                 step_text = step[:80] + "..." if len(step) > 80 else step
@@ -428,10 +443,31 @@ class TLAGPowerPointBuilder:
                 content1.append(("\n   ✓ ", False, None))
                 content1.append((str(ex.get('answer'))[:60], True, self.GREEN))
         
-        self._add_text_content(tf1, content1, font_size=16)
+        if content1:
+            self._add_text_content(tf1, content1, font_size=16)
         
         if image_path:
             self._add_image_to_slide(slide1, image_path, left=9.0, top=1.5, width=3.5)
+        
+        # ===== SLIDE 2: TURN AND TALK (uses TURN_TALK template) =====
+        if len(examples) > 1:
+            slide_tt = self._add_slide("TURN_TALK")
+            tf_tt = self._create_text_box(slide_tt, 0.5, 1.3, 12.0, 5.7)
+            
+            ex = examples[1]
+            content_tt = [
+                (f"📝 {ex.get('question', '')[:120]}", True, None)
+            ]
+            
+            for i, step in enumerate(ex.get('steps', [])[:4], 1):
+                step_text = step[:70] + "..." if len(step) > 70 else step
+                content_tt.append((f"\n   Step {i}: {step_text}", False, None))
+            
+            if ex.get('answer'):
+                content_tt.append(("\n\n   ✓ Answer: ", False, None))
+                content_tt.append((str(ex.get('answer'))[:50], True, self.GREEN))
+            
+            self._add_text_content(tf_tt, content_tt, font_size=16)
         
         # Additional slides for more examples (max 2 more)
         for i, example in enumerate(examples[1:3], 2):
@@ -557,7 +593,7 @@ class TLAGPowerPointBuilder:
         return self
     
     def add_exit_ticket(self, question: str, options: list, answer: str):
-        """Add Exit Ticket slide - FIXED LAYOUT."""
+        """Add Exit Ticket slide - Uses EXIT template layout."""
         slide = self._add_slide("EXIT")
         
         # Find relevant image
@@ -568,10 +604,7 @@ class TLAGPowerPointBuilder:
         
         q_text = question[:200]
         content = [
-            ("🎟️ EXIT TICKET", True, self.RED),
-            ("\nAnswer on your post-it:", True, self.GRAY),
-            ("\n", False, None),
-            (f"\n{q_text}", False, None),
+            (f"{q_text}", False, None),
             ("\n", False, None)
         ]
         
@@ -588,6 +621,106 @@ class TLAGPowerPointBuilder:
         if image_path:
             self._add_image_to_slide(slide, image_path, left=9.5, top=1.5, width=3.3)
         
+        return self
+    
+    # =========================================================================
+    # TLAG TECHNIQUE SLIDES
+    # =========================================================================
+    
+    def add_cold_call(self, question: str, answer: str = None):
+        """Add a Cold Call slide using the COLD_CALL template."""
+        slide = self._add_slide("COLD_CALL")
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
+        
+        content = [(f"📝 {question[:180]}", False, None)]
+        
+        if answer:
+            content.append(("\n\n✓ Expected Answer: ", True, None))
+            content.append((str(answer)[:100], True, self.GREEN))
+        
+        self._add_text_content(tf, content, font_size=20)
+        return self
+    
+    def add_show_me(self, instruction: str, what_to_show: str = None):
+        """Add a Show Me slide using the SHOW_ME template."""
+        slide = self._add_slide("SHOW_ME")
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
+        
+        content = [(f"📝 {instruction[:180]}", False, None)]
+        
+        if what_to_show:
+            content.append((f"\n\n👆 Show: {what_to_show[:100]}", True, self.BLUE))
+        
+        self._add_text_content(tf, content, font_size=20)
+        return self
+    
+    def add_everybody_writes(self, prompt: str, time_mins: int = 2):
+        """Add an Everybody Writes slide using the EVERYBODY_WRITES template."""
+        slide = self._add_slide("EVERYBODY_WRITES")
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
+        
+        content = [
+            (f"📝 {prompt[:200]}", False, None),
+            (f"\n\n⏱️ Time: {time_mins} minutes", True, self.ORANGE)
+        ]
+        
+        self._add_text_content(tf, content, font_size=20)
+        return self
+    
+    def add_show_call(self, question: str, expected_response: str = None):
+        """Add a Show Call slide using the SHOW_CALL template."""
+        slide = self._add_slide("SHOW_CALL")
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
+        
+        content = [(f"📝 {question[:180]}", False, None)]
+        
+        if expected_response:
+            content.append(("\n\n✓ Look for: ", True, None))
+            content.append((str(expected_response)[:100], True, self.GREEN))
+        
+        self._add_text_content(tf, content, font_size=20)
+        return self
+    
+    def add_turn_and_talk(self, discussion_prompt: str, time_seconds: int = 30):
+        """Add a Turn and Talk slide using the TURN_TALK template."""
+        slide = self._add_slide("TURN_TALK")
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
+        
+        content = [
+            (f"📝 {discussion_prompt[:200]}", False, None),
+            (f"\n\n⏱️ Time: {time_seconds} seconds", True, self.ORANGE)
+        ]
+        
+        self._add_text_content(tf, content, font_size=20)
+        return self
+    
+    def add_stretch_it(self, follow_up_question: str, hint: str = None):
+        """Add a Stretch It slide using the STRETCH_IT template."""
+        slide = self._add_slide("STRETCH_IT")
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
+        
+        content = [(f"🤔 {follow_up_question[:180]}", False, None)]
+        
+        if hint:
+            content.append((f"\n\n💡 Hint: {hint[:100]}", False, self.GRAY))
+        
+        self._add_text_content(tf, content, font_size=20)
+        return self
+    
+    def add_right_is_right(self, question: str, partial_answer: str, correct_answer: str):
+        """Add a Right is Right slide using the RIGHT_IS_RIGHT template."""
+        slide = self._add_slide("RIGHT_IS_RIGHT")
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
+        
+        content = [
+            (f"📝 {question[:150]}", False, None),
+            ("\n\n❌ Partial answer: ", True, None),
+            (f"{partial_answer[:80]}", False, self.ORANGE),
+            ("\n\n✓ Complete answer: ", True, None),
+            (f"{correct_answer[:80]}", True, self.GREEN)
+        ]
+        
+        self._add_text_content(tf, content, font_size=18)
         return self
     
     def save(self, output_path: str):
