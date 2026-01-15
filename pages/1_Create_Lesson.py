@@ -1,6 +1,6 @@
 """
 Page 1: Create Lesson
-Streamlined lesson creation using pre-made TLAG lessons
+Modern, streamlined lesson creation
 """
 import streamlit as st
 import sys
@@ -29,12 +29,10 @@ def get_all_available_lessons(subject: str, subtopic_id: str) -> list:
 
 def get_lesson_data(subject: str, subtopic_id: str, lesson_num: int) -> dict:
     """Get lesson content for any subject. Prefers expanded lessons with richer content."""
-    # First check if expanded lesson is available (these have richer content)
     expanded = get_expanded_lesson(subject, subtopic_id, lesson_num)
     if expanded:
         return expanded
     
-    # Fallback to standard lessons
     if subject == "Chemistry":
         return get_chemistry_lesson(subtopic_id, lesson_num)
     elif subject == "Biology":
@@ -48,94 +46,211 @@ def get_lesson_data(subject: str, subtopic_id: str, lesson_num: int) -> dict:
 st.set_page_config(
     page_title="Create Lesson | GEMS TLAG",
     page_icon="📝",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for better styling
+# Modern CSS styling
 st.markdown("""
 <style>
-    /* Main container styling */
+    /* Base styles */
     .main .block-container {
-        padding-top: 2rem;
-        max-width: 1200px;
+        padding: 2rem 3rem;
+        max-width: 1000px;
     }
     
-    /* Header styling */
-    .main-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0.5rem;
-    }
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     
-    .subtitle {
-        font-size: 1.1rem;
-        color: #666;
+    /* Page header */
+    .page-header {
         margin-bottom: 2rem;
     }
     
-    /* Card styling */
-    .lesson-card {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        border-left: 4px solid #667eea;
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
     }
     
-    /* Success message styling */
+    .page-subtitle {
+        color: #6b7280;
+        font-size: 1rem;
+    }
+    
+    /* Step indicators */
+    .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 2rem 0 1rem;
+    }
+    
+    .step-badge {
+        background: #10b981;
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+    
+    .step-label {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+    
+    /* Selector cards */
+    .selector-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Lesson available banner */
     .success-banner {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
         padding: 1rem 1.5rem;
         border-radius: 10px;
         font-weight: 600;
         text-align: center;
+        margin: 1.5rem 0;
+        font-size: 1rem;
+    }
+    
+    /* Preview card */
+    .preview-card {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.5rem;
         margin: 1rem 0;
     }
     
-    /* Button improvements */
-    .stButton > button {
-        border-radius: 8px;
+    .preview-title {
         font-weight: 600;
-        transition: all 0.3s ease;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Checklist items */
+    .checklist {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .checklist li {
+        padding: 0.5rem 0;
+        color: #4b5563;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .checklist li::before {
+        content: "✓";
+        color: #10b981;
+        font-weight: bold;
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        background: #10b981 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
     }
     
     .stButton > button:hover {
+        background: #059669 !important;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3) !important;
+    }
+    
+    /* Download button special styling */
+    .stDownloadButton > button {
+        background: #10b981 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        width: 100% !important;
     }
     
     /* Selectbox styling */
+    .stSelectbox > label {
+        font-weight: 600;
+        color: #374151;
+    }
+    
     .stSelectbox > div > div {
         border-radius: 8px;
+        border-color: #d1d5db;
     }
     
     /* Expander styling */
     .streamlit-expanderHeader {
         font-weight: 600;
-        font-size: 1rem;
+        color: #374151;
+        background: #f9fafb;
+        border-radius: 8px;
     }
     
-    /* Hide sidebar by default for cleaner look */
-    [data-testid="stSidebar"] {
-        min-width: 0;
+    /* Info box styling */
+    .info-box {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 1rem;
+        color: #1e40af;
     }
     
-    /* Step indicators */
-    .step-number {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: inline-flex;
+    /* Warning styling */
+    .warning-box {
+        background: #fffbeb;
+        border: 1px solid #fcd34d;
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+        color: #92400e;
+    }
+    
+    /* Back link */
+    .back-link {
+        color: #6b7280;
+        text-decoration: none;
+        display: flex;
         align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        margin-right: 10px;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .back-link:hover {
+        color: #10b981;
+    }
+    
+    /* Divider */
+    .divider {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 2rem 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -145,24 +260,37 @@ if 'lesson_data' not in st.session_state:
     st.session_state.lesson_data = {}
 
 # ============================================================================
-# HEADER
+# BACK NAVIGATION
 # ============================================================================
-st.markdown('<p class="main-title">📝 Create Your TLAG Lesson</p>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Select a topic and generate a complete PowerPoint in seconds!</p>', unsafe_allow_html=True)
+st.markdown('<a href="/" target="_self" class="back-link">← Back to Home</a>', unsafe_allow_html=True)
 
 # ============================================================================
-# STEP 1: SELECT TOPIC
+# PAGE HEADER
 # ============================================================================
-st.markdown("### <span class='step-number'>1</span> Choose Your Topic", unsafe_allow_html=True)
+st.markdown("""
+<div class="page-header">
+    <h1 class="page-title">📝 Create Your Lesson</h1>
+    <p class="page-subtitle">Select a topic, choose a lesson, and download your PowerPoint</p>
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================================
+# STEP 1: CHOOSE TOPIC
+# ============================================================================
+st.markdown("""
+<div class="step-indicator">
+    <div class="step-badge">1</div>
+    <span class="step-label">Choose Your Topic</span>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
     subject = st.selectbox(
-        "🔬 Subject",
+        "Subject",
         ["Chemistry", "Biology", "Physics"],
-        index=0,
-        help="Select your science subject"
+        index=0
     )
 
 # Get topics for selected subject
@@ -172,9 +300,8 @@ topic_options = {f"{k}: {v['name']}": k for k, v in topics.items()}
 
 with col2:
     selected_topic = st.selectbox(
-        "📖 Topic",
-        list(topic_options.keys()) if topic_options else ["No topics available"],
-        help="Select the main topic area"
+        "Topic",
+        list(topic_options.keys()) if topic_options else ["No topics available"]
     )
 
 # Get subtopics for selected topic
@@ -184,9 +311,8 @@ subtopic_options = {f"{k}: {v['name']}": k for k, v in subtopics.items()}
 
 with col3:
     selected_subtopic = st.selectbox(
-        "📚 Subtopic",
-        list(subtopic_options.keys()) if subtopic_options else ["No subtopics available"],
-        help="Select the specific subtopic"
+        "Subtopic",
+        list(subtopic_options.keys()) if subtopic_options else ["No subtopics available"]
     )
 
 # Get subtopic details
@@ -195,23 +321,28 @@ content_points = get_subtopic_content(subject, topic_id, subtopic_id) if subtopi
 
 # Optional: Show specification content
 if content_points:
-    with st.expander("📋 View Specification Content", expanded=False):
+    with st.expander("📋 View specification content"):
         for point in content_points:
             st.markdown(f"• {point}")
 
 # Show related practicals if any
 related_practicals = get_related_practicals(subject, topic_id) if topic_id else []
 if related_practicals:
-    with st.expander(f"🔬 Related Required Practicals ({len(related_practicals)})", expanded=False):
+    with st.expander(f"🔬 Related practicals ({len(related_practicals)})"):
         for p in related_practicals:
             st.markdown(f"**{p['name']}**: {p['description']}")
 
-st.markdown("---")
+st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
 # ============================================================================
 # STEP 2: SELECT LESSON
 # ============================================================================
-st.markdown("### <span class='step-number'>2</span> Select a Lesson", unsafe_allow_html=True)
+st.markdown("""
+<div class="step-indicator">
+    <div class="step-badge">2</div>
+    <span class="step-label">Select a Lesson</span>
+</div>
+""", unsafe_allow_html=True)
 
 # Check for available lessons
 available_lessons = get_all_available_lessons(subject, subtopic_id) if subtopic_id else []
@@ -220,57 +351,64 @@ if available_lessons:
     # Success banner
     st.markdown(f"""
     <div class="success-banner">
-        ✅ {len(available_lessons)} ready-made lesson(s) available for this topic!
+        ✓ {len(available_lessons)} lesson(s) available for this topic
     </div>
     """, unsafe_allow_html=True)
     
     lesson_options = [f"Lesson {l['number']}: {l['title']}" for l in available_lessons]
     selected_lesson = st.selectbox(
-        "📚 Choose a lesson",
+        "Choose a lesson",
         lesson_options,
-        help="Select which lesson you want to generate"
+        label_visibility="collapsed"
     )
     
     lesson_num = int(selected_lesson.split(":")[0].replace("Lesson ", ""))
     lesson_data = get_lesson_data(subject, subtopic_id, lesson_num)
     
     if lesson_data:
-        # Lesson preview card
-        st.markdown("#### 📋 Lesson Preview")
-        
+        # Lesson preview
         col1, col2 = st.columns([2, 1])
         
         with col1:
-            st.markdown(f"**🎯 Learning Outcome:**")
+            st.markdown("#### 🎯 Learning Outcome")
             st.info(lesson_data.get('learning_outcome', 'N/A'))
             
-            st.markdown("**🧠 Key Knowledge (To Know):**")
+            st.markdown("#### 🧠 Key Knowledge")
             to_know_items = lesson_data.get('to_know', [])[:4]
             for i, item in enumerate(to_know_items, 1):
                 st.markdown(f"{i}. {item}")
             if len(lesson_data.get('to_know', [])) > 4:
-                st.caption(f"...and {len(lesson_data.get('to_know', [])) - 4} more items")
+                st.caption(f"+ {len(lesson_data.get('to_know', [])) - 4} more items")
         
         with col2:
-            st.markdown("**📊 Lesson Includes:**")
-            st.markdown(f"✅ {len(lesson_data.get('do_now', {}).get('questions', []))} Do Now questions")
-            st.markdown("✅ I Do demonstration")
-            st.markdown("✅ We Do practice")
-            st.markdown("✅ You Do tasks (Bronze/Silver/Gold)")
-            st.markdown("✅ Exit Ticket")
+            st.markdown("#### ✓ Includes")
+            st.markdown(f"""
+            <ul class="checklist">
+                <li>{len(lesson_data.get('do_now', {}).get('questions', []))} Do Now questions</li>
+                <li>I Do demonstration</li>
+                <li>We Do practice</li>
+                <li>You Do (differentiated)</li>
+                <li>Exit Ticket</li>
+            </ul>
+            """, unsafe_allow_html=True)
         
-        st.markdown("---")
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
         
         # ============================================================================
         # STEP 3: GENERATE POWERPOINT
         # ============================================================================
-        st.markdown("### <span class='step-number'>3</span> Generate PowerPoint", unsafe_allow_html=True)
+        st.markdown("""
+        <div class="step-indicator">
+            <div class="step-badge">3</div>
+            <span class="step-label">Generate & Download</span>
+        </div>
+        """, unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns([1, 2, 1])
         
         with col2:
             if st.button("🚀 Generate PowerPoint", type="primary", use_container_width=True):
-                with st.spinner("⏳ Creating your PowerPoint... Please wait..."):
+                with st.spinner("Creating your PowerPoint..."):
                     try:
                         from core.pptx_builder import TLAGPowerPointBuilder
                         import io
@@ -284,7 +422,7 @@ if available_lessons:
                         builder = TLAGPowerPointBuilder(template_path)
                         builder.create_presentation()
                         
-                        # Add all slides
+                        # Add slides
                         builder.add_do_now(
                             lesson_data.get('do_now', {}).get('questions', []),
                             lesson_data.get('do_now', {}).get('answers', [])
@@ -295,7 +433,6 @@ if available_lessons:
                             lesson_data.get('to_know', [])
                         )
                         
-                        # Use expanded I Do slides if examples are available
                         i_do_data = lesson_data.get('i_do', {})
                         if i_do_data.get('examples') or i_do_data.get('key_points'):
                             builder.add_i_do_slides(i_do_data)
@@ -305,7 +442,6 @@ if available_lessons:
                                 i_do_data.get('content', [])
                             )
                         
-                        # Use expanded We Do slides if multiple examples available
                         we_do_data = lesson_data.get('we_do', {})
                         if we_do_data.get('examples'):
                             builder.add_we_do_slides(we_do_data)
@@ -316,10 +452,8 @@ if available_lessons:
                                 we_do_data.get('steps', [])
                             )
                         
-                        # Use expanded You Do slides for more tasks
                         builder.add_you_do_slides(lesson_data.get('you_do', []))
                         
-                        # Add affirmative checking if available
                         aff_check = lesson_data.get('affirmative_checking', {})
                         if aff_check:
                             builder.add_affirmative_checking(
@@ -327,7 +461,6 @@ if available_lessons:
                                 action=aff_check.get('action', '')
                             )
                         
-                        # Add exit ticket
                         exit_data = lesson_data.get('exit_ticket', {})
                         builder.add_exit_ticket(
                             exit_data.get('question', ''),
@@ -346,54 +479,30 @@ if available_lessons:
                         st.success("✅ Your PowerPoint is ready!")
                         st.balloons()
                         
-                        # Download button
                         st.download_button(
-                            label="📥 Download Your PowerPoint",
+                            label="📥 Download PowerPoint",
                             data=buffer,
                             file_name=filename,
                             mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                            type="primary",
                             use_container_width=True
                         )
                         
                     except Exception as e:
-                        st.error(f"❌ Error generating PowerPoint: {str(e)}")
-                        import traceback
-                        with st.expander("🔧 Error Details"):
+                        st.error(f"Error: {str(e)}")
+                        with st.expander("Error details"):
+                            import traceback
                             st.code(traceback.format_exc())
 
 else:
-    # No lessons available message
-    st.warning("""
-    ⚠️ **No pre-made lessons available for this subtopic yet.**
-    
-    We're constantly adding new lessons! In the meantime, try:
-    - Selecting a different subtopic
-    - Check back soon for updates
-    """)
+    st.markdown("""
+    <div class="warning-box">
+        <strong>⚠️ No lessons available for this subtopic yet</strong><br>
+        <span style="font-size: 0.9rem;">We're adding new lessons regularly. Try a different subtopic!</span>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ============================================================================
 # FOOTER
 # ============================================================================
-st.markdown("---")
-
-# Quick tips
-with st.expander("💡 Tips for Great Lessons", expanded=False):
-    st.markdown("""
-    **Using Your Downloaded PowerPoint:**
-    1. Open the PowerPoint in Microsoft PowerPoint or Google Slides
-    2. Add your own images and diagrams to slides
-    3. Customize the Bronze/Silver/Gold tasks for your class
-    4. Add any additional worked examples you need
-    
-    **The TLAG Structure:**
-    - 🕰️ **Do Now** - Retrieval practice (5 mins)
-    - 🎯 **Learning Outcome** - Clear success criteria
-    - 🧠 **To Know** - Key knowledge points
-    - 👁️ **I Do** - Teacher demonstration
-    - 🤝 **We Do** - Guided practice
-    - ✏️ **You Do** - Independent practice
-    - 🎟️ **Exit Ticket** - Check understanding
-    """)
-
+st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 st.caption("Built with ❤️ for GEMS Education Teachers")
