@@ -480,6 +480,187 @@ TOPIC_4_1_DATA = {
             "For crystallisation, stop heating when crystals start to form at the edges",
             "In filtration, fold the filter paper into a cone shape for best results"
         ]
+    },
+    
+    # ============================================================================
+    # ADDITIONAL DETAILED CONTENT (from mark schemes and specifications)
+    # ============================================================================
+    
+    "purity_and_definitions": {
+        "module_id": "4.1.1.4",
+        "sub_topic": "Mixtures & Purity (Definitions)",
+        "key_concepts": [
+            {
+                "concept": "Pure Substances: Chemistry vs. Everyday Life",
+                "details": [
+                    "In Chemistry: A pure substance is a single element or a single compound.",
+                    "In Everyday Life: A pure substance is a substance that has had nothing added to it (e.g., 'pure orange juice').",
+                    "Melting/Boiling Points: Pure substances melt and boil at specific temperatures. Impure substances boil over a range of temperatures."
+                ],
+                "key_distinction": {
+                    "Chemistry definition": "A single element or compound (e.g., pure water = H₂O only)",
+                    "Everyday definition": "Nothing added (e.g., 'pure' orange juice still contains water, sugars, acids)"
+                },
+                "exam_tip": "If asked about purity in chemistry, always refer to single element/compound, not 'nothing added'",
+                "quiz_question": {
+                    "question": "Which definition describes a pure substance in chemistry?",
+                    "correct_answer": "A single element or a single compound",
+                    "distractors": [
+                        "A substance that has had nothing added to it",
+                        "A substance with no impurities",
+                        "A substance that is clean"
+                    ]
+                }
+            }
+        ],
+        "melting_point_analysis": {
+            "pure_substance": "Sharp, specific melting/boiling point",
+            "impure_substance": "Melting/boiling point is lower and occurs over a range",
+            "exam_application": "Use melting point data to determine if a substance is pure or impure"
+        }
+    },
+    
+    "comparison_tables": {
+        "transition_vs_group1": {
+            "note": "This is a frequent 6-mark extended response question",
+            "physical_properties": {
+                "headers": ["Property", "Transition Elements", "Group 1 Elements"],
+                "rows": [
+                    ["Melting Point", "High", "Low"],
+                    ["Density", "High", "Low"],
+                    ["Hardness", "Hard and strong", "Soft (can cut with knife)"],
+                    ["Conductivity", "Good conductors", "Good conductors"]
+                ]
+            },
+            "chemical_properties": {
+                "headers": ["Property", "Transition Elements", "Group 1 Elements"],
+                "rows": [
+                    ["Reactivity", "Low - react slowly with water/oxygen", "Very high - react vigorously with water"],
+                    ["Ion charges", "Variable (e.g., Fe²⁺, Fe³⁺)", "Always +1 only"],
+                    ["Compound colours", "Coloured compounds", "White or colourless compounds"],
+                    ["Catalyst use", "Often used as catalysts", "Not used as catalysts"]
+                ]
+            },
+            "model_6_mark_answer": """
+Transition elements have much higher melting points than Group 1 metals. 
+Transition elements have high densities while Group 1 have low densities - Li, Na, K float on water.
+Transition elements are hard and strong, but Group 1 metals are soft enough to cut with a knife.
+
+Chemically, transition elements have low reactivity and react slowly with water or oxygen.
+Group 1 metals are very reactive and react vigorously with water and non-metals.
+Transition elements form ions with different charges (e.g., Fe can form Fe²⁺ and Fe³⁺).
+Group 1 elements only form +1 ions.
+Transition elements form coloured compounds while Group 1 form white or colourless compounds.
+Transition elements are often used as catalysts (e.g., iron in Haber process), but Group 1 are not used as catalysts.
+"""
+        }
+    },
+    
+    "maths_skills": {
+        "topic_relevance": "Topic 1 - Atomic Structure",
+        "skills": [
+            {
+                "skill": "Surface Area Calculations",
+                "context": "Calculating surface area of nanoparticles to understand their high surface area to volume ratio",
+                "formula": "Surface Area of Cube = 6 × (side length)²",
+                "worked_examples": [
+                    {
+                        "question": "Calculate the surface area of a cube with side length 2.8 nm.",
+                        "working": [
+                            "Surface Area = 6 × (side length)²",
+                            "Surface Area = 6 × (2.8)²",
+                            "Surface Area = 6 × 7.84",
+                            "Surface Area = 47.04 nm²"
+                        ],
+                        "answer": "47.04 nm² (or 47 nm² to 2 s.f.)",
+                        "marks": 2
+                    },
+                    {
+                        "question": "A nanoparticle has side length 5.0 nm. Calculate its surface area.",
+                        "working": [
+                            "Surface Area = 6 × (5.0)²",
+                            "Surface Area = 6 × 25",
+                            "Surface Area = 150 nm²"
+                        ],
+                        "answer": "150 nm²",
+                        "marks": 2
+                    }
+                ],
+                "marking_note": "Allow answers correct to 2 significant figures even if calculation stage is incorrect",
+                "common_errors": [
+                    "Forgetting to multiply by 6 (only calculating one face)",
+                    "Forgetting to square the side length"
+                ]
+            },
+            {
+                "skill": "Calculating Subatomic Particles",
+                "formulas": [
+                    "Neutrons = Mass Number − Atomic Number",
+                    "Protons = Atomic Number",
+                    "Electrons = Atomic Number (for neutral atoms)"
+                ],
+                "worked_example": {
+                    "question": "An atom has mass number 23 and atomic number 11. Calculate the number of protons, neutrons, and electrons.",
+                    "working": [
+                        "Protons = Atomic Number = 11",
+                        "Electrons = Atomic Number = 11 (neutral atom)",
+                        "Neutrons = Mass Number − Atomic Number = 23 − 11 = 12"
+                    ],
+                    "answer": "11 protons, 11 electrons, 12 neutrons"
+                }
+            }
+        ]
+    },
+    
+    "practical_marking_points": {
+        "filtration": {
+            "diagram_requirements": [
+                "Must draw a filter funnel containing filter paper",
+                "Must include a suitable vessel (beaker/conical flask) to collect the filtrate",
+                "Labels 'sand' and 'water' (or residue/filtrate) must be in correct places",
+                "Sand/residue labelled in the filter paper",
+                "Water/filtrate labelled in the collection vessel"
+            ],
+            "common_errors": [
+                "Drawing a sealed vessel (no way for liquid to enter)",
+                "Missing the filter paper line inside the funnel",
+                "Labelling sand in the beaker instead of in the filter",
+                "Not showing the funnel sitting above the collection vessel"
+            ],
+            "full_marks_checklist": [
+                "Filter funnel drawn (1)",
+                "Filter paper shown in funnel (1)",
+                "Collection vessel below funnel (1)",
+                "Labels correctly placed (1)"
+            ]
+        },
+        "chromatography": {
+            "diagram_requirements": [
+                "Beaker/container with solvent at the bottom",
+                "Chromatography paper standing in solvent",
+                "Pencil line visible ABOVE the solvent level",
+                "Spots on the pencil line (not in the solvent)"
+            ],
+            "common_errors": [
+                "Drawing pencil line below the solvent level (spots would dissolve)",
+                "Using pen instead of pencil for baseline (pen ink runs)",
+                "Not showing solvent front or spots"
+            ]
+        },
+        "distillation": {
+            "diagram_requirements": [
+                "Round-bottom flask with solution",
+                "Condenser connected at an angle",
+                "Water in and water out labels on condenser (water in at bottom)",
+                "Collection vessel at end",
+                "Thermometer in neck of flask"
+            ],
+            "common_errors": [
+                "Water flow direction wrong (should enter at bottom, exit at top)",
+                "Missing thermometer",
+                "Condenser pointing upwards instead of angled down"
+            ]
+        }
     }
 }
 

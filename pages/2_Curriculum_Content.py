@@ -295,6 +295,147 @@ with tab4:
     tips = resources.get("practical_tips", [])
     for tip in tips:
         st.markdown(f"• {tip}")
+    
+    st.markdown("---")
+    
+    # Purity definitions
+    purity_data = topic_data.get("purity_and_definitions", {})
+    if purity_data:
+        st.markdown("#### 🧪 Purity Definitions (Important for Exams)")
+        for concept in purity_data.get("key_concepts", []):
+            st.markdown(f"**{concept.get('concept', '')}**")
+            for detail in concept.get("details", []):
+                st.markdown(f"• {detail}")
+            
+            key_dist = concept.get("key_distinction", {})
+            if key_dist:
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.info(f"🔬 **Chemistry:** {key_dist.get('Chemistry definition', '')}")
+                with col2:
+                    st.warning(f"🏠 **Everyday:** {key_dist.get('Everyday definition', '')}")
+            
+            exam_tip = concept.get("exam_tip", "")
+            if exam_tip:
+                st.success(f"💡 **Exam Tip:** {exam_tip}")
+    
+    st.markdown("---")
+    
+    # Comparison tables
+    comp_tables = topic_data.get("comparison_tables", {})
+    if comp_tables:
+        st.markdown("#### 📊 Comparison Tables")
+        
+        trans_vs_g1 = comp_tables.get("transition_vs_group1", {})
+        if trans_vs_g1:
+            st.markdown("**Transition Elements vs Group 1** (6-mark question)")
+            st.caption(trans_vs_g1.get("note", ""))
+            
+            # Physical properties table
+            phys = trans_vs_g1.get("physical_properties", {})
+            if phys:
+                st.markdown("**Physical Properties:**")
+                headers = phys.get("headers", [])
+                rows = phys.get("rows", [])
+                
+                cols = st.columns(3)
+                for i, h in enumerate(headers):
+                    cols[i].markdown(f"**{h}**")
+                for row in rows:
+                    cols = st.columns(3)
+                    for i, cell in enumerate(row):
+                        cols[i].markdown(cell)
+            
+            # Chemical properties table
+            chem = trans_vs_g1.get("chemical_properties", {})
+            if chem:
+                st.markdown("**Chemical Properties:**")
+                headers = chem.get("headers", [])
+                rows = chem.get("rows", [])
+                
+                cols = st.columns(3)
+                for i, h in enumerate(headers):
+                    cols[i].markdown(f"**{h}**")
+                for row in rows:
+                    cols = st.columns(3)
+                    for i, cell in enumerate(row):
+                        cols[i].markdown(cell)
+            
+            # Model answer
+            model = trans_vs_g1.get("model_6_mark_answer", "")
+            if model:
+                with st.expander("📝 View Model 6-Mark Answer"):
+                    st.markdown(model)
+    
+    st.markdown("---")
+    
+    # Maths skills
+    maths_data = topic_data.get("maths_skills", {})
+    if maths_data:
+        st.markdown("#### 📐 Maths Skills")
+        
+        for skill in maths_data.get("skills", []):
+            with st.expander(f"🔢 {skill.get('skill', '')}"):
+                context = skill.get("context", "")
+                if context:
+                    st.markdown(f"**Context:** {context}")
+                
+                formula = skill.get("formula", "")
+                if formula:
+                    st.code(formula, language=None)
+                
+                # Worked examples
+                for ex in skill.get("worked_examples", []):
+                    st.markdown(f"**Q:** {ex.get('question', '')}")
+                    st.markdown("**Working:**")
+                    for step in ex.get("working", []):
+                        st.markdown(f"   {step}")
+                    st.success(f"**A:** {ex.get('answer', '')}")
+                    st.markdown("---")
+                
+                # Single worked example
+                we = skill.get("worked_example", {})
+                if we:
+                    st.markdown(f"**Q:** {we.get('question', '')}")
+                    st.markdown("**Working:**")
+                    for step in we.get("working", []):
+                        st.markdown(f"   {step}")
+                    st.success(f"**A:** {we.get('answer', '')}")
+                
+                # Common errors
+                errors = skill.get("common_errors", [])
+                if errors:
+                    st.markdown("**Common Errors:**")
+                    for err in errors:
+                        st.error(f"❌ {err}")
+    
+    st.markdown("---")
+    
+    # Practical marking points
+    marking = topic_data.get("practical_marking_points", {})
+    if marking:
+        st.markdown("#### ✅ Practical Diagram Marking Points")
+        
+        for prac_name, prac_data in marking.items():
+            with st.expander(f"🔬 {prac_name.title()} Diagram Requirements"):
+                reqs = prac_data.get("diagram_requirements", [])
+                if reqs:
+                    st.markdown("**Must include:**")
+                    for req in reqs:
+                        st.markdown(f"✓ {req}")
+                
+                errors = prac_data.get("common_errors", [])
+                if errors:
+                    st.markdown("**Common Errors (avoid these):**")
+                    for err in errors:
+                        st.error(f"❌ {err}")
+                
+                checklist = prac_data.get("full_marks_checklist", [])
+                if checklist:
+                    st.markdown("**Full Marks Checklist:**")
+                    for item in checklist:
+                        st.markdown(f"• {item}")
 
 st.markdown("---")
 st.caption("Built with ❤️ for GEMS Education Teachers")
+
