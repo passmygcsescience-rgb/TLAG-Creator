@@ -166,17 +166,24 @@ class TLAGPowerPointBuilder:
         """Add a slide with the specified layout."""
         layout_idx = self.LAYOUTS.get(layout_name, 1)
         slide = self.prs.slides.add_slide(self.prs.slide_layouts[layout_idx])
-        self._remove_title(slide)
+        self._remove_all_placeholders(slide)
         return slide
     
-    def _remove_title(self, slide):
-        """Remove title placeholder."""
-        try:
-            title_ph = slide.placeholders[0]
-            sp = title_ph._element
-            sp.getparent().remove(sp)
-        except:
-            pass
+    def _remove_all_placeholders(self, slide):
+        """Remove ALL placeholders from slide to prevent 'Click to add text' boxes."""
+        # Collect all placeholder elements first
+        placeholders_to_remove = []
+        for shape in slide.shapes:
+            if shape.is_placeholder:
+                placeholders_to_remove.append(shape)
+        
+        # Remove them
+        for ph in placeholders_to_remove:
+            try:
+                sp = ph._element
+                sp.getparent().remove(sp)
+            except:
+                pass
     
     def _find_image_for_text(self, text: str) -> str:
         """Find appropriate image based on text content."""
@@ -245,7 +252,7 @@ class TLAGPowerPointBuilder:
         slide = self._add_slide("DO_NOW")
         
         # Create text box with proper sizing
-        tf = self._create_text_box(slide, 0.5, 0.5, 8.5, 6.5)
+        tf = self._create_text_box(slide, 0.5, 1.3, 8.5, 5.7)
         
         content = [
             ("🕰️ DO NOW", True, self.BLUE),
@@ -273,7 +280,7 @@ class TLAGPowerPointBuilder:
         slide = self._add_slide("OUTCOMES")
         
         # Left column - Learning Outcome
-        tf_left = self._create_text_box(slide, 0.5, 0.5, 6.0, 6.5)
+        tf_left = self._create_text_box(slide, 0.5, 1.3, 6.0, 5.7)
         content_left = [
             ("🎯 LEARNING OUTCOME", True, self.BLUE),
             ("\n", False, None),
@@ -282,7 +289,7 @@ class TLAGPowerPointBuilder:
         self._add_text_content(tf_left, content_left, font_size=20)
         
         # Right column - To Know
-        tf_right = self._create_text_box(slide, 6.8, 0.5, 6.0, 6.5)
+        tf_right = self._create_text_box(slide, 6.8, 1.3, 6.0, 5.7)
         content_right = [
             ("🧠 TO KNOW", True, self.PURPLE),
             ("\n", False, None)
@@ -312,7 +319,7 @@ class TLAGPowerPointBuilder:
         # Determine text width based on whether we have an image
         text_width = 8.0 if image_path else 12.0
         
-        tf1 = self._create_text_box(slide1, 0.5, 0.5, text_width, 6.5)
+        tf1 = self._create_text_box(slide1, 0.5, 1.3, text_width, 5.7)
         content1 = [
             ("👨‍🏫 I DO: " + title, True, self.PURPLE),
             ("\n", False, None),
@@ -333,7 +340,7 @@ class TLAGPowerPointBuilder:
         # ===== SLIDE 2: WORKED EXAMPLE (if available) =====
         if examples:
             slide2 = self._add_slide("I_DO")
-            tf2 = self._create_text_box(slide2, 0.5, 0.5, 12.0, 6.5)
+            tf2 = self._create_text_box(slide2, 0.5, 1.3, 12.0, 5.7)
             
             content2 = [("👨‍🏫 I DO: Worked Example", True, self.PURPLE), ("\n", False, None)]
             
@@ -355,7 +362,7 @@ class TLAGPowerPointBuilder:
         # ===== SLIDE 3: KEY POINTS (if available) =====
         if key_points:
             slide3 = self._add_slide("I_DO")
-            tf3 = self._create_text_box(slide3, 0.5, 0.5, 8.0, 6.5)
+            tf3 = self._create_text_box(slide3, 0.5, 1.3, 8.0, 5.7)
             
             content3 = [("👨‍🏫 I DO: Key Points", True, self.PURPLE), ("\n", False, None)]
             
@@ -401,7 +408,7 @@ class TLAGPowerPointBuilder:
         slide1 = self._add_slide("WE_DO")
         text_width = 8.0 if image_path else 12.0
         
-        tf1 = self._create_text_box(slide1, 0.5, 0.5, text_width, 6.5)
+        tf1 = self._create_text_box(slide1, 0.5, 1.3, text_width, 5.7)
         content1 = [
             ("👥 WE DO: Guided Practice", True, self.BLUE),
             ("\n🗣️ Turn and Talk with your partner", True, self.ORANGE),
@@ -429,7 +436,7 @@ class TLAGPowerPointBuilder:
         # Additional slides for more examples (max 2 more)
         for i, example in enumerate(examples[1:3], 2):
             slide_n = self._add_slide("WE_DO")
-            tf_n = self._create_text_box(slide_n, 0.5, 0.5, 12.0, 6.5)
+            tf_n = self._create_text_box(slide_n, 0.5, 1.3, 12.0, 5.7)
             
             content_n = [
                 (f"👥 WE DO: Example {i}", True, self.BLUE),
@@ -464,7 +471,7 @@ class TLAGPowerPointBuilder:
         
         # ===== SLIDE 1: BRONZE + SILVER =====
         slide1 = self._add_slide("YOU_DO")
-        tf1 = self._create_text_box(slide1, 0.5, 0.5, 12.0, 6.5)
+        tf1 = self._create_text_box(slide1, 0.5, 1.3, 12.0, 5.7)
         
         content1 = [("✍️ YOU DO: Independent Practice", True, self.PURPLE), ("\n", False, None)]
         
@@ -488,7 +495,7 @@ class TLAGPowerPointBuilder:
         # ===== SLIDE 2: GOLD + EXTENSION =====
         if len(you_do_data) >= 3:
             slide2 = self._add_slide("YOU_DO")
-            tf2 = self._create_text_box(slide2, 0.5, 0.5, 12.0, 6.5)
+            tf2 = self._create_text_box(slide2, 0.5, 1.3, 12.0, 5.7)
             
             content2 = [("✍️ YOU DO: Challenge Tasks", True, self.PURPLE), ("\n", False, None)]
             
@@ -519,7 +526,7 @@ class TLAGPowerPointBuilder:
                                   question: str = None, mark_scheme: list = None):
         """Add Affirmative Checking slide - FIXED LAYOUT."""
         slide = self._add_slide("CHECK")
-        tf = self._create_text_box(slide, 0.5, 0.5, 12.0, 6.5)
+        tf = self._create_text_box(slide, 0.5, 1.3, 12.0, 5.7)
         
         content = [("✔️ AFFIRMATIVE CHECKING", True, self.RED), ("\n", False, None)]
         
@@ -557,7 +564,7 @@ class TLAGPowerPointBuilder:
         image_path = self._find_image_for_text(question)
         text_width = 8.5 if image_path else 12.0
         
-        tf = self._create_text_box(slide, 0.5, 0.5, text_width, 6.5)
+        tf = self._create_text_box(slide, 0.5, 1.3, text_width, 5.7)
         
         q_text = question[:200]
         content = [

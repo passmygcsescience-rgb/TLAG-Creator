@@ -53,7 +53,7 @@ st.markdown(f"### {metadata.get('topic_id', '')} {metadata.get('topic_title', ''
 st.markdown(f"**Course:** {metadata.get('course', '')} | **Exam:** {metadata.get('exam_paper', '')}")
 
 # Tabs for different content types
-tab1, tab2, tab3, tab4 = st.tabs(["📚 Content Modules", "📝 Exam Questions", "🔬 Practicals", "💡 Teaching Tips"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["📚 Content Modules", "📝 Exam Questions", "🔬 Practicals", "💡 Teaching Tips", "📜 History"])
 
 # ============================================================================
 # TAB 1: CONTENT MODULES
@@ -436,6 +436,145 @@ with tab4:
                     for item in checklist:
                         st.markdown(f"• {item}")
 
+# ============================================================================
+# TAB 5: HISTORY
+# ============================================================================
+with tab5:
+    st.markdown("### History of the Atom & Periodic Table")
+    
+    # Atom timeline
+    atom_history = topic_data.get("history_of_atom", {})
+    if atom_history:
+        st.markdown("#### ⏳ Development of the Atomic Model")
+        
+        timeline = atom_history.get("timeline", [])
+        for event in timeline:
+            with st.expander(f"**{event.get('era', '')}** - {event.get('model', '')} ({event.get('scientist', '')})"):
+                st.markdown(f"**Details:** {event.get('details', '')}")
+                
+                if event.get('discovery'):
+                    st.info(f"🔬 **Discovery:** {event.get('discovery')}")
+                
+                if event.get('experiment'):
+                    st.markdown(f"**Experiment:** {event.get('experiment')}")
+                
+                observations = event.get('observations', [])
+                if observations:
+                    st.markdown("**Observations:**")
+                    for obs in observations:
+                        st.markdown(f"• {obs}")
+                
+                if event.get('conclusion'):
+                    st.success(f"✓ **Conclusion:** {event.get('conclusion')}")
+                
+                if event.get('key_idea'):
+                    st.markdown(f"**Key Idea:** {event.get('key_idea')}")
+        
+        # Exam question
+        exam_q = atom_history.get("common_exam_question", {})
+        if exam_q:
+            st.markdown("---")
+            st.markdown("**📝 Common Exam Question:**")
+            st.warning(exam_q.get("question", ""))
+            with st.expander("View Mark Scheme"):
+                for point in exam_q.get("mark_scheme", []):
+                    st.markdown(f"• {point}")
+    
+    st.markdown("---")
+    
+    # Periodic table history
+    pt_history = topic_data.get("periodic_table_history", {})
+    if pt_history:
+        st.markdown("#### 📊 Development of the Periodic Table")
+        
+        for figure in pt_history.get("key_figures", []):
+            with st.expander(f"**{figure.get('era', '')}** - {figure.get('name', '')}"):
+                st.markdown(f"**Method:** {figure.get('method', '')}")
+                
+                if figure.get('idea'):
+                    st.markdown(f"**Idea:** {figure.get('idea')}")
+                
+                limitations = figure.get('limitations', [])
+                if limitations:
+                    st.markdown("**Limitations:**")
+                    for lim in limitations:
+                        st.error(f"❌ {lim}")
+                
+                genius = figure.get('genius_moves', [])
+                if genius:
+                    st.markdown("**Genius Moves:**")
+                    for g in genius:
+                        st.success(f"✓ {g}")
+                
+                if figure.get('validation'):
+                    st.info(f"🎯 **Validation:** {figure.get('validation')}")
+                
+                if figure.get('key_change'):
+                    st.markdown(f"**Key Change:** {figure.get('key_change')}")
+        
+        exam_tip = pt_history.get("exam_tip", "")
+        if exam_tip:
+            st.success(f"💡 **Exam Tip:** {exam_tip}")
+    
+    st.markdown("---")
+    
+    # Halogens detailed
+    halogens = topic_data.get("group_7_halogens", {})
+    if halogens:
+        st.markdown("#### 🧪 Group 7 Halogens - Detailed")
+        
+        # Elements table
+        elements = halogens.get("elements", [])
+        if elements:
+            st.markdown("**Halogen Elements:**")
+            cols = st.columns(4)
+            cols[0].markdown("**Element**")
+            cols[1].markdown("**Symbol**")
+            cols[2].markdown("**Colour**")
+            cols[3].markdown("**State at RT**")
+            for el in elements:
+                cols = st.columns(4)
+                cols[0].markdown(el.get("name", ""))
+                cols[1].markdown(el.get("symbol", ""))
+                cols[2].markdown(el.get("colour", ""))
+                cols[3].markdown(el.get("state_at_RT", ""))
+        
+        # Displacement reactions
+        disp = halogens.get("displacement_reactions", {})
+        if disp:
+            st.markdown("---")
+            st.markdown("**Displacement Reactions:**")
+            st.info(f"📜 **Rule:** {disp.get('rule', '')}")
+            
+            for ex in disp.get("examples", []):
+                st.markdown(f"**{ex.get('word_equation', ex.get('reaction', ''))}**")
+                st.code(ex.get("symbol_equation", ""), language=None)
+                if ex.get("observation"):
+                    st.markdown(f"👁️ Observation: {ex.get('observation')}")
+            
+            no_reaction = disp.get("no_reaction_examples", [])
+            if no_reaction:
+                st.markdown("**No Reaction Examples:**")
+                for nr in no_reaction:
+                    st.error(f"❌ {nr}")
+    
+    st.markdown("---")
+    
+    # Standard form
+    sf = topic_data.get("standard_form_skills", {})
+    if sf:
+        st.markdown("#### 📐 Standard Form & Atomic Sizes")
+        
+        for fact in sf.get("key_facts", []):
+            st.markdown(f"• {fact}")
+        
+        reminder = sf.get("standard_form_reminder", {})
+        if reminder:
+            st.code(reminder.get("format", ""), language=None)
+            
+            examples = reminder.get("examples", [])
+            for ex in examples:
+                st.markdown(f"• {ex.get('value')} = **{ex.get('standard_form')}** ({ex.get('context')})")
+
 st.markdown("---")
 st.caption("Built with ❤️ for GEMS Education Teachers")
-

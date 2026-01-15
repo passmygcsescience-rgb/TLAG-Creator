@@ -661,6 +661,196 @@ Transition elements are often used as catalysts (e.g., iron in Haber process), b
                 "Condenser pointing upwards instead of angled down"
             ]
         }
+    },
+    
+    # ============================================================================
+    # HISTORY OF THE ATOM & PERIODIC TABLE
+    # ============================================================================
+    
+    "history_of_atom": {
+        "module_id": "4.1.1.3",
+        "sub_topic": "Development of the Model of the Atom",
+        "timeline": [
+            {
+                "era": "Pre-1900s",
+                "model": "Solid Sphere Model",
+                "scientist": "John Dalton",
+                "details": "Atoms were thought to be tiny spheres that could not be divided.",
+                "key_idea": "All matter is made of atoms; atoms are indivisible"
+            },
+            {
+                "era": "1897",
+                "model": "Plum Pudding Model",
+                "scientist": "J.J. Thomson",
+                "details": "The atom is a ball of positive charge with negative electrons embedded in it.",
+                "discovery": "Thomson discovered the electron using cathode rays",
+                "analogy": "Like plums (electrons) in a pudding (positive charge)",
+                "limitations": "Could not explain results of later experiments"
+            },
+            {
+                "era": "1909-1911",
+                "model": "Nuclear Model",
+                "scientist": "Ernest Rutherford (with Geiger and Marsden)",
+                "experiment": "Alpha Particle Scattering Experiment",
+                "method": "Fired alpha particles at thin gold foil",
+                "observations": [
+                    "Most alpha particles passed straight through (atom is mostly empty space)",
+                    "Some were deflected at small angles (positive charge in centre)",
+                    "A few bounced back (mass concentrated in small, dense nucleus)"
+                ],
+                "conclusion": "Replaced the Plum Pudding Model. The mass is concentrated in a tiny, positively charged nucleus at the centre.",
+                "key_change": "Showed atom is mostly empty space with a dense nucleus"
+            },
+            {
+                "era": "1913",
+                "model": "Bohr Model",
+                "scientist": "Niels Bohr",
+                "details": "Electrons orbit the nucleus at specific distances (energy levels/shells).",
+                "improvement": "Explained why electrons don't spiral into the nucleus",
+                "key_idea": "Electrons exist in fixed orbits with specific energy levels"
+            },
+            {
+                "era": "1932",
+                "model": "Discovery of the Neutron",
+                "scientist": "James Chadwick",
+                "details": "Provided evidence for neutral particles in the nucleus.",
+                "significance": "Explained isotopes - same element with different masses"
+            }
+        ],
+        "common_exam_question": {
+            "question": "Compare the Plum Pudding model with the Nuclear model of the atom.",
+            "mark_scheme": [
+                "Plum Pudding: Positive charge spread throughout atom (1)",
+                "Nuclear: Positive charge concentrated in nucleus (1)",
+                "Plum Pudding: Electrons embedded in positive charge (1)",
+                "Nuclear: Electrons orbit around nucleus (1)",
+                "Plum Pudding: No nucleus (1)",
+                "Nuclear: Small, dense nucleus at centre (1)"
+            ]
+        }
+    },
+    
+    "periodic_table_history": {
+        "module_id": "4.1.2.2",
+        "sub_topic": "Development of the Periodic Table",
+        "key_figures": [
+            {
+                "name": "John Newlands",
+                "era": "1864",
+                "method": "Arranged elements by atomic weight - 'Law of Octaves'",
+                "idea": "Every 8th element had similar properties",
+                "limitations": [
+                    "Only worked for first 16 elements",
+                    "Forced elements into groups where they didn't fit",
+                    "No gaps left for undiscovered elements",
+                    "Not accepted by other scientists at the time"
+                ]
+            },
+            {
+                "name": "Dmitri Mendeleev",
+                "era": "1869",
+                "method": "Arranged by atomic weight but left gaps for undiscovered elements",
+                "genius_moves": [
+                    "Left gaps where patterns suggested missing elements",
+                    "Predicted properties of missing elements (eka-aluminium, eka-silicon)",
+                    "Swapped order of some elements to keep similar elements in same group"
+                ],
+                "validation": "When gallium (1875) and germanium (1886) were discovered, they matched his predictions exactly",
+                "success_reason": "His table was accepted because his predictions came true"
+            },
+            {
+                "name": "Modern Periodic Table",
+                "era": "Early 1900s",
+                "key_change": "Elements now ordered by Atomic Number (proton number), not atomic weight",
+                "reason": "Ordering by atomic number puts isotopes in correct places and solves problems like Ar/K and Te/I",
+                "scientist": "Henry Moseley determined atomic numbers using X-rays"
+            }
+        ],
+        "exam_tip": "Mendeleev's genius was LEAVING GAPS and PREDICTING properties - this is what made his table successful"
+    },
+    
+    "group_7_halogens": {
+        "module_id": "4.1.2.6",
+        "sub_topic": "Group 7 (Halogens) - Detailed",
+        "elements": [
+            {"name": "Fluorine", "symbol": "F₂", "colour": "Pale yellow gas", "state_at_RT": "Gas"},
+            {"name": "Chlorine", "symbol": "Cl₂", "colour": "Green gas", "state_at_RT": "Gas"},
+            {"name": "Bromine", "symbol": "Br₂", "colour": "Brown/orange liquid", "state_at_RT": "Liquid"},
+            {"name": "Iodine", "symbol": "I₂", "colour": "Grey solid / purple vapour", "state_at_RT": "Solid"}
+        ],
+        "general_properties": [
+            "Non-metals consisting of diatomic molecules (pairs of atoms like Cl₂, Br₂)",
+            "Poisonous - must handle with care in lab",
+            "All have 7 electrons in outer shell",
+            "Form -1 ions by gaining one electron (e.g., Cl⁻)"
+        ],
+        "trends_down_group": {
+            "reactivity": {
+                "trend": "Decreases down the group",
+                "explanation": [
+                    "Atoms get larger going down the group",
+                    "Outer shell is further from nucleus",
+                    "More electron shielding",
+                    "Harder to attract and gain an extra electron"
+                ]
+            },
+            "melting_boiling_points": {
+                "trend": "Increase down the group",
+                "explanation": "Larger molecules have stronger intermolecular forces"
+            }
+        },
+        "displacement_reactions": {
+            "rule": "A more reactive halogen can displace a less reactive halogen from an aqueous solution of its salt.",
+            "examples": [
+                {
+                    "reaction": "Chlorine + Potassium Bromide → Potassium Chloride + Bromine",
+                    "word_equation": "Chlorine + Potassium Bromide → Potassium Chloride + Bromine",
+                    "symbol_equation": "Cl₂ + 2KBr → 2KCl + Br₂",
+                    "observation": "Solution turns orange/brown (bromine formed)",
+                    "explanation": "Chlorine is more reactive than bromine, so displaces it"
+                },
+                {
+                    "reaction": "Chlorine + Potassium Iodide → Potassium Chloride + Iodine",
+                    "symbol_equation": "Cl₂ + 2KI → 2KCl + I₂",
+                    "observation": "Solution turns brown/black (iodine formed)"
+                },
+                {
+                    "reaction": "Bromine + Potassium Iodide → Potassium Bromide + Iodine",
+                    "symbol_equation": "Br₂ + 2KI → 2KBr + I₂",
+                    "observation": "Solution turns brown/black"
+                }
+            ],
+            "no_reaction_examples": [
+                "Bromine + Potassium Chloride → No reaction (Br less reactive than Cl)",
+                "Iodine + Potassium Bromide → No reaction (I less reactive than Br)"
+            ]
+        }
+    },
+    
+    "standard_form_skills": {
+        "skill": "Standard Form and Atomic Sizes",
+        "relevance": "Essential for understanding atomic and nuclear sizes",
+        "key_facts": [
+            "Atoms are approximately 0.1 nm (1 × 10⁻¹⁰ m) in radius",
+            "The nucleus is about 1/10,000th of the atom's radius (1 × 10⁻¹⁵ m)",
+            "Most of the atom is empty space"
+        ],
+        "standard_form_reminder": {
+            "format": "a × 10ⁿ where 1 ≤ a < 10",
+            "examples": [
+                {"value": "0.0000000001 m", "standard_form": "1 × 10⁻¹⁰ m", "context": "Atomic radius"},
+                {"value": "0.000000000000001 m", "standard_form": "1 × 10⁻¹⁵ m", "context": "Nuclear radius"},
+                {"value": "6,020,000,000,000,000,000,000,000", "standard_form": "6.02 × 10²³", "context": "Avogadro's number"}
+            ]
+        },
+        "worked_example": {
+            "question": "An atom has radius 2.0 × 10⁻¹⁰ m. Express this in nanometres (nm).",
+            "working": [
+                "1 nm = 1 × 10⁻⁹ m",
+                "2.0 × 10⁻¹⁰ m = 0.2 × 10⁻⁹ m = 0.2 nm"
+            ],
+            "answer": "0.2 nm"
+        }
     }
 }
 
