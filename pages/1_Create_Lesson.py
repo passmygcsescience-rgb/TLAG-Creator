@@ -231,32 +231,24 @@ if available_lessons:
                         # Generate filename
                         filename = f"Lesson_{lesson_data.get('lesson_number', 1)}_{lesson_data.get('title', 'Untitled').replace(' ', '_')}.pptx"
                         
-                        # Save directly to output folder with correct name
-                        import os
-                        output_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output")
-                        os.makedirs(output_dir, exist_ok=True)
-                        output_path = os.path.join(output_dir, filename)
-                        builder.save(output_path)
+                        # Save to a BytesIO buffer for download
+                        import io
+                        buffer = io.BytesIO()
+                        builder.prs.save(buffer)
+                        buffer.seek(0)
                         
-                        # Also save to Desktop for easy access
-                        desktop_path = os.path.expanduser(f"~/Desktop/{filename}")
-                        builder.save(desktop_path)
-                        
-                        st.success(f"✅ PowerPoint saved!")
+                        st.success(f"✅ PowerPoint generated!")
                         st.balloons()
                         
-                        # Show file locations
-                        st.markdown(f"""
-### 📁 Your PowerPoint is ready!
-
-**Saved to your Desktop:**  
-`{desktop_path}`
-
-**Also saved to:**  
-`{output_path}`
-
-Just open the file directly from your Desktop!
-""")
+                        # Provide download button
+                        st.download_button(
+                            label="📥 Download PowerPoint",
+                            data=buffer,
+                            file_name=filename,
+                            mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                            type="primary",
+                            use_container_width=True
+                        )
                         
                     except Exception as e:
                         st.error(f"❌ Error: {str(e)}")
