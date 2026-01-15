@@ -99,9 +99,14 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Professional CSS
+# Professional CSS - Light Glassmorphism Theme with 3D Effects
 st.markdown("""
 <style>
+    /* Light background with subtle pattern */
+    .stApp {
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
+    }
+    
     .main .block-container {
         padding: 2rem 3rem;
         max-width: 1100px;
@@ -110,92 +115,153 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    .mode-card {
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        border: 2px solid #cbd5e1;
-        border-radius: 16px;
+    /* 3D Glassmorphism Cards */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 20px;
         padding: 1.5rem;
-        text-align: center;
-        cursor: pointer;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.08),
+            0 2px 8px rgba(0, 0, 0, 0.04),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
         transition: all 0.3s ease;
-        min-height: 160px;
     }
     
-    .mode-card:hover {
-        border-color: #3b82f6;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+    .glass-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 
+            0 16px 48px rgba(0, 0, 0, 0.12),
+            0 4px 12px rgba(0, 0, 0, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
     }
     
-    .mode-card.active {
-        border-color: #3b82f6;
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    }
-    
-    .mode-icon {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .mode-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 0.5rem;
-    }
-    
-    .mode-desc {
-        font-size: 0.9rem;
-        color: #64748b;
-    }
-    
+    /* Section Headers with 3D effect */
     .section-header {
-        background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 0.75rem 1.25rem;
-        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        border-radius: 16px;
         margin: 1.5rem 0 1rem 0;
         font-weight: 600;
+        font-size: 1.1rem;
+        box-shadow: 
+            0 8px 24px rgba(102, 126, 234, 0.35),
+            0 4px 8px rgba(118, 75, 162, 0.2);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
     
+    /* 3D Buttons */
     .stButton > button {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
         color: white !important;
         border: none !important;
-        border-radius: 10px !important;
+        border-radius: 14px !important;
         font-weight: 600 !important;
-        padding: 0.75rem 2rem !important;
+        padding: 0.875rem 2rem !important;
         font-size: 1rem !important;
-        transition: all 0.3s ease !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 
+            0 4px 14px rgba(16, 185, 129, 0.4),
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3) !important;
+        transform: translateY(-3px) scale(1.02) !important;
+        box-shadow: 
+            0 8px 25px rgba(16, 185, 129, 0.5),
+            0 4px 8px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
     }
     
+    .stButton > button:active {
+        transform: translateY(-1px) scale(0.98) !important;
+    }
+    
+    /* Download button with blue 3D effect */
     .stDownloadButton > button {
         background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
         color: white !important;
-        border-radius: 10px !important;
+        border-radius: 14px !important;
         font-weight: 600 !important;
-        padding: 0.75rem 2rem !important;
+        padding: 0.875rem 2rem !important;
+        box-shadow: 
+            0 4px 14px rgba(59, 130, 246, 0.4),
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        transition: all 0.3s ease !important;
     }
     
-    .preview-box {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1.25rem;
-        margin: 0.5rem 0;
+    .stDownloadButton > button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 
+            0 8px 25px rgba(59, 130, 246, 0.5),
+            0 4px 8px rgba(0, 0, 0, 0.15) !important;
     }
     
-    .edit-section {
-        background: #fffbeb;
-        border: 1px solid #fcd34d;
-        border-radius: 12px;
-        padding: 1rem;
-        margin: 0.75rem 0;
+    /* Selectbox styling */
+    .stSelectbox > div > div {
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(203, 213, 225, 0.6) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+    
+    /* Text input styling */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(203, 213, 225, 0.6) !important;
+        box-shadow: 
+            inset 0 2px 4px rgba(0, 0, 0, 0.02),
+            0 1px 2px rgba(0, 0, 0, 0.02) !important;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: #667eea !important;
+        box-shadow: 
+            0 0 0 3px rgba(102, 126, 234, 0.15),
+            inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+    
+    /* Info/Success/Warning boxes with glass effect */
+    .stAlert {
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(8px) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    /* Title styling */
+    h1 {
+        background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #db2777 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 800 !important;
+    }
+    
+    /* Subtle animations */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+    }
+    
+    .floating {
+        animation: float 3s ease-in-out infinite;
     }
 </style>
 """, unsafe_allow_html=True)
