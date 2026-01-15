@@ -53,7 +53,7 @@ st.markdown(f"### {metadata.get('topic_id', '')} {metadata.get('topic_title', ''
 st.markdown(f"**Course:** {metadata.get('course', '')} | **Exam:** {metadata.get('exam_paper', '')}")
 
 # Tabs for different content types
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["📚 Content Modules", "📝 Exam Questions", "🔬 Practicals", "💡 Teaching Tips", "📜 History"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📚 Content Modules", "📝 Exam Questions", "🔬 Practicals", "💡 Teaching Tips", "📜 History", "🎓 Higher Tier"])
 
 # ============================================================================
 # TAB 1: CONTENT MODULES
@@ -575,6 +575,159 @@ with tab5:
             examples = reminder.get("examples", [])
             for ex in examples:
                 st.markdown(f"• {ex.get('value')} = **{ex.get('standard_form')}** ({ex.get('context')})")
+
+# ============================================================================
+# TAB 6: HIGHER TIER
+# ============================================================================
+with tab6:
+    st.markdown("### 🎓 Higher Tier Content")
+    st.info("This content is specifically for **Higher Tier** students aiming for grades 7-9.")
+    
+    ht_content = topic_data.get("higher_tier_content", {})
+    
+    # Atomic Sizes
+    atomic_sizes = ht_content.get("atomic_sizes", {})
+    if atomic_sizes:
+        with st.expander("📏 Size and Mass of Atoms (Memorisation Required)", expanded=True):
+            st.markdown(f"**{atomic_sizes.get('module_id', '')}** - {atomic_sizes.get('sub_topic', '')}")
+            
+            for fact in atomic_sizes.get("key_facts", []):
+                st.markdown(f"**{fact.get('fact')}:** {fact.get('value')}")
+                if fact.get('detail'):
+                    st.caption(fact.get('detail'))
+                if fact.get('visual_analogy'):
+                    st.info(f"🏟️ **Analogy:** {fact.get('visual_analogy')}")
+    
+    # Relative Atomic Mass
+    ar_content = ht_content.get("relative_atomic_mass", {})
+    if ar_content:
+        with st.expander("⚗️ Relative Atomic Mass (Ar) Calculation", expanded=True):
+            st.warning(f"⚠️ **{ar_content.get('tier', '')}**")
+            st.markdown(f"**Concept:** {ar_content.get('concept', '')}")
+            st.markdown(f"**Definition:** {ar_content.get('definition', '')}")
+            
+            st.markdown("**Formula:**")
+            st.code(ar_content.get("formula", ""), language=None)
+            st.code(ar_content.get("formula_expanded", ""), language=None)
+            
+            st.markdown("---")
+            st.markdown("**Worked Examples:**")
+            
+            for ex in ar_content.get("worked_examples", []):
+                st.markdown(f"**{ex.get('element', '')}:** {ex.get('question', '')}")
+                st.markdown("**Working:**")
+                for step in ex.get("working", []):
+                    st.markdown(f"   {step}")
+                st.success(f"**Answer:** {ex.get('answer', '')}")
+                if ex.get("explanation"):
+                    st.info(f"💡 {ex.get('explanation')}")
+                st.markdown("---")
+            
+            if ar_content.get("exam_tip"):
+                st.success(f"📝 **Exam Tip:** {ar_content.get('exam_tip')}")
+    
+    # Chemical Equations
+    chem_eq = ht_content.get("chemical_equations", {})
+    if chem_eq:
+        with st.expander("⚖️ Chemical Equations & State Symbols"):
+            for fund in chem_eq.get("fundamentals", []):
+                st.markdown(f"**{fund.get('concept', '')}**")
+                
+                symbols = fund.get("symbols", {})
+                if symbols:
+                    cols = st.columns(4)
+                    for i, (sym, meaning) in enumerate(symbols.items()):
+                        cols[i].code(sym)
+                        cols[i].caption(meaning)
+                
+                if fund.get("exam_tip"):
+                    st.warning(f"⚠️ {fund.get('exam_tip')}")
+                
+                examples = fund.get("examples", [])
+                if examples:
+                    st.markdown("**Examples:**")
+                    for ex in examples:
+                        st.code(ex, language=None)
+                
+                steps = fund.get("steps", [])
+                if steps:
+                    for i, step in enumerate(steps, 1):
+                        st.markdown(f"{i}. {step}")
+                
+                st.markdown("---")
+    
+    # Half Equations
+    half_eq = ht_content.get("half_equations", {})
+    if half_eq:
+        with st.expander("⚡ Half Equations (Higher Tier Only)"):
+            st.warning(f"⚠️ **{half_eq.get('tier', '')}**")
+            st.markdown(f"**Purpose:** {half_eq.get('purpose', '')}")
+            
+            st.markdown("**Key Terms:**")
+            terms = half_eq.get("key_terms", {})
+            for term, meaning in terms.items():
+                if term == "OILRIG":
+                    st.success(f"🧠 **{term}:** {meaning}")
+                else:
+                    st.markdown(f"• **{term}:** {meaning}")
+            
+            examples = half_eq.get("examples", {})
+            
+            # Group 1 oxidation
+            g1 = examples.get("group_1_oxidation", {})
+            if g1:
+                st.markdown(f"**{g1.get('description', '')}**")
+                for eq in g1.get("equations", []):
+                    st.code(eq, language=None)
+                st.caption(g1.get("explanation", ""))
+            
+            # Group 7 reduction
+            g7 = examples.get("group_7_reduction", {})
+            if g7:
+                st.markdown(f"**{g7.get('description', '')}**")
+                for eq in g7.get("equations", []):
+                    st.code(eq, language=None)
+                st.caption(g7.get("explanation", ""))
+            
+            # Combining
+            combining = half_eq.get("combining_half_equations", {})
+            if combining:
+                st.markdown("---")
+                st.markdown(f"**Combining Half Equations:** {combining.get('example', '')}")
+                st.markdown("Oxidation:")
+                st.code(combining.get("oxidation", ""), language=None)
+                st.markdown("Reduction:")
+                st.code(combining.get("reduction", ""), language=None)
+                st.markdown("Overall:")
+                st.code(combining.get("overall", ""), language=None)
+                st.info(combining.get("note", ""))
+    
+    # Electronic Structure
+    elec = ht_content.get("electronic_structure_diagrams", {})
+    if elec:
+        with st.expander("⚛️ Drawing Electronic Structures"):
+            st.markdown("**Method:**")
+            for i, step in enumerate(elec.get("method", []), 1):
+                st.markdown(f"{i}. {step}")
+            
+            st.markdown("---")
+            st.markdown("**Common Examples:**")
+            examples = elec.get("common_examples", [])
+            cols = st.columns(4)
+            cols[0].markdown("**Element**")
+            cols[1].markdown("**Atomic #**")
+            cols[2].markdown("**Config**")
+            cols[3].markdown("**Description**")
+            
+            for ex in examples:
+                cols = st.columns(4)
+                cols[0].markdown(f"{ex.get('element')} ({ex.get('symbol')})")
+                cols[1].markdown(str(ex.get("atomic_number")))
+                cols[2].code(ex.get("config"))
+                cols[3].caption(ex.get("description"))
+            
+            if elec.get("exam_tip"):
+                st.success(f"📝 **Exam Tip:** {elec.get('exam_tip')}")
 
 st.markdown("---")
 st.caption("Built with ❤️ for GEMS Education Teachers")

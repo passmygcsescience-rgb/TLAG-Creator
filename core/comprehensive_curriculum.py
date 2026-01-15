@@ -851,6 +851,178 @@ Transition elements are often used as catalysts (e.g., iron in Haber process), b
             ],
             "answer": "0.2 nm"
         }
+    },
+    
+    # ============================================================================
+    # HIGHER TIER TECHNICAL SPECIFICATIONS
+    # ============================================================================
+    
+    "higher_tier_content": {
+        "target_audience": "Higher Tier & Grade 9 Students",
+        
+        "atomic_sizes": {
+            "module_id": "4.1.1.5",
+            "sub_topic": "Size and Mass of Atoms",
+            "memorisation_required": True,
+            "key_facts": [
+                {
+                    "fact": "Radius of an atom",
+                    "value": "Approximately 0.1 nm (1 × 10⁻¹⁰ m)",
+                    "detail": "This is incredibly small - about 1 ten-billionth of a metre"
+                },
+                {
+                    "fact": "Radius of a nucleus",
+                    "value": "Less than 1/10,000 of the radius of the atom (≈ 1 × 10⁻¹⁴ m)",
+                    "visual_analogy": "If the atom were a sports stadium, the nucleus would be a marble in the center."
+                },
+                {
+                    "fact": "Most of the atom",
+                    "value": "Empty space",
+                    "detail": "The mass is concentrated in the tiny nucleus"
+                }
+            ],
+            "maths_skill": {
+                "skill": "Standard Form Conversions",
+                "examples": [
+                    "Convert 0.1 nm to meters → 0.1 × 10⁻⁹ m = 1 × 10⁻¹⁰ m",
+                    "Convert 1 × 10⁻¹⁰ m to nm → 0.1 nm"
+                ]
+            }
+        },
+        
+        "relative_atomic_mass": {
+            "module_id": "4.1.1.6",
+            "sub_topic": "Relative Atomic Mass (Ar) Calculation",
+            "tier": "Higher Tier Only",
+            "concept": "Calculating Ar using isotopic abundance",
+            "definition": "The weighted average mass of atoms of an element, taking into account the relative abundances of its isotopes",
+            "formula": "Ar = Σ(Mass of Isotope × Abundance) / 100",
+            "formula_expanded": "((Mass₁ × Abundance₁) + (Mass₂ × Abundance₂)) / 100",
+            "worked_examples": [
+                {
+                    "element": "Chlorine",
+                    "question": "Chlorine exists as 75% Chlorine-35 and 25% Chlorine-37. Calculate the Ar.",
+                    "working": [
+                        "Step 1: Multiply each isotope mass by its abundance",
+                        "   (35 × 75) = 2625",
+                        "   (37 × 25) = 925",
+                        "Step 2: Add these values",
+                        "   2625 + 925 = 3550",
+                        "Step 3: Divide by 100",
+                        "   3550 ÷ 100 = 35.5"
+                    ],
+                    "answer": "35.5",
+                    "explanation": "This is why Chlorine appears as 35.5 on the Periodic Table!"
+                },
+                {
+                    "element": "Copper",
+                    "question": "Copper exists as 69% Cu-63 and 31% Cu-65. Calculate the Ar.",
+                    "working": [
+                        "(63 × 69) + (65 × 31) = 4347 + 2015 = 6362",
+                        "6362 ÷ 100 = 63.62"
+                    ],
+                    "answer": "63.62 (rounds to 63.5 on Periodic Table)"
+                },
+                {
+                    "element": "Bromine",
+                    "question": "Bromine has two isotopes: Br-79 (50.5%) and Br-81 (49.5%). Calculate the Ar.",
+                    "working": [
+                        "(79 × 50.5) + (81 × 49.5) = 3989.5 + 4009.5 = 7999",
+                        "7999 ÷ 100 = 79.99 ≈ 80"
+                    ],
+                    "answer": "80"
+                }
+            ],
+            "exam_tip": "Always show your working! Marks are given for method even if final answer is wrong."
+        },
+        
+        "chemical_equations": {
+            "module_id": "4.1.1.1",
+            "sub_topic": "Chemical Equations & Conservation",
+            "fundamentals": [
+                {
+                    "concept": "State Symbols",
+                    "symbols": {
+                        "(s)": "solid",
+                        "(l)": "liquid",
+                        "(g)": "gas",
+                        "(aq)": "aqueous (dissolved in water)"
+                    },
+                    "exam_tip": "Always check if the question asks for state symbols. Marks are often lost here!",
+                    "examples": [
+                        "2Na(s) + 2H₂O(l) → 2NaOH(aq) + H₂(g)",
+                        "CaCO₃(s) → CaO(s) + CO₂(g)"
+                    ]
+                },
+                {
+                    "concept": "Balancing Equations",
+                    "key_rule": "Same number of atoms of each element on both sides",
+                    "steps": [
+                        "Write the unbalanced equation with correct formulas",
+                        "Count atoms of each element on both sides",
+                        "Add coefficients to balance (never change formulas!)",
+                        "Check all elements are balanced"
+                    ]
+                }
+            ]
+        },
+        
+        "half_equations": {
+            "tier": "Higher Tier Only",
+            "concept": "Half Equations for Electron Transfer",
+            "purpose": "Show what happens to electrons in Group 1 and Group 7 reactions",
+            "key_terms": {
+                "Oxidation": "Loss of electrons (OIL - Oxidation Is Loss)",
+                "Reduction": "Gain of electrons (RIG - Reduction Is Gain)",
+                "OILRIG": "Oxidation Is Loss, Reduction Is Gain"
+            },
+            "examples": {
+                "group_1_oxidation": {
+                    "description": "Group 1 metals LOSE electrons (oxidation)",
+                    "equations": [
+                        "Na → Na⁺ + e⁻",
+                        "K → K⁺ + e⁻",
+                        "Li → Li⁺ + e⁻"
+                    ],
+                    "explanation": "The metal atom loses its outer electron to form a +1 ion"
+                },
+                "group_7_reduction": {
+                    "description": "Group 7 halogens GAIN electrons (reduction)",
+                    "equations": [
+                        "Cl₂ + 2e⁻ → 2Cl⁻",
+                        "Br₂ + 2e⁻ → 2Br⁻",
+                        "I₂ + 2e⁻ → 2I⁻"
+                    ],
+                    "explanation": "Each halogen atom gains one electron to form a -1 ion"
+                }
+            },
+            "combining_half_equations": {
+                "example": "Sodium reacting with chlorine",
+                "oxidation": "2Na → 2Na⁺ + 2e⁻",
+                "reduction": "Cl₂ + 2e⁻ → 2Cl⁻",
+                "overall": "2Na + Cl₂ → 2NaCl",
+                "note": "Electrons cancel out when combining half equations"
+            }
+        },
+        
+        "electronic_structure_diagrams": {
+            "concept": "Drawing Electronic Structures",
+            "method": [
+                "Draw nucleus in center (can show p and n)",
+                "Draw shells as circles around nucleus",
+                "Add electrons as dots or crosses",
+                "First shell: max 2 electrons",
+                "Second shell: max 8 electrons",
+                "Third shell: max 8 electrons (GCSE level)"
+            ],
+            "common_examples": [
+                {"element": "Sodium", "symbol": "Na", "atomic_number": 11, "config": "2,8,1", "description": "2 electrons in 1st shell, 8 in 2nd, 1 in 3rd"},
+                {"element": "Chlorine", "symbol": "Cl", "atomic_number": 17, "config": "2,8,7", "description": "2 electrons in 1st shell, 8 in 2nd, 7 in 3rd"},
+                {"element": "Magnesium", "symbol": "Mg", "atomic_number": 12, "config": "2,8,2", "description": "2 electrons in 1st shell, 8 in 2nd, 2 in 3rd"},
+                {"element": "Oxygen", "symbol": "O", "atomic_number": 8, "config": "2,6", "description": "2 electrons in 1st shell, 6 in 2nd"}
+            ],
+            "exam_tip": "Use dots OR crosses consistently. Only use both when showing bonding between two atoms."
+        }
     }
 }
 
