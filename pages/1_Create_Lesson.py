@@ -1,6 +1,6 @@
 """
 Page 1: Create Lesson
-Professional two-option workflow: Quick Download or Customise First
+Professional two-option workflow with Modern Premium Design
 """
 import streamlit as st
 import sys
@@ -99,169 +99,337 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Professional CSS - Light Glassmorphism Theme with 3D Effects
+# Modern Premium CSS with Dark Theme
 st.markdown("""
 <style>
-    /* Light background with subtle pattern */
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    /* Base styling with dark gradient background */
     .stApp {
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
+        background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 100%);
+        font-family: 'Inter', sans-serif;
     }
     
     .main .block-container {
         padding: 2rem 3rem;
-        max-width: 1100px;
+        max-width: 1200px;
     }
     
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* 3D Glassmorphism Cards */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
+    /* Page header */
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+    
+    .page-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1.1rem;
+    }
+    
+    /* Mode Selection Cards */
+    .mode-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.1);
         border-radius: 20px;
         padding: 1.5rem;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.08),
-            0 2px 8px rgba(0, 0, 0, 0.04),
-            inset 0 1px 0 rgba(255, 255, 255, 0.9);
-        transition: all 0.3s ease;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        height: 100%;
     }
     
-    .glass-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 
-            0 16px 48px rgba(0, 0, 0, 0.12),
-            0 4px 12px rgba(0, 0, 0, 0.06),
-            inset 0 1px 0 rgba(255, 255, 255, 1);
+    .mode-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(99, 102, 241, 0.4);
+        background: rgba(99, 102, 241, 0.1);
     }
     
-    /* Section Headers with 3D effect */
-    .section-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .mode-card.active {
+        border-color: #6366f1;
+        background: linear-gradient(145deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.1));
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+    }
+    
+    .mode-icon {
+        font-size: 2.5rem;
+        display: block;
+        margin-bottom: 0.75rem;
+    }
+    
+    .mode-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+    }
+    
+    .mode-desc {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.4;
+    }
+    
+    /* Step Headers */
+    .step-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 2rem 0 1.5rem 0;
+    }
+    
+    .step-badge {
+        background: linear-gradient(135deg, #6366f1, #a855f7);
         color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 16px;
-        margin: 1.5rem 0 1rem 0;
-        font-weight: 600;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
         font-size: 1.1rem;
-        box-shadow: 
-            0 8px 24px rgba(102, 126, 234, 0.35),
-            0 4px 8px rgba(118, 75, 162, 0.2);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
     }
     
-    /* 3D Buttons */
+    .step-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+    
+    /* Glass Cards */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .glass-card-header {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #a78bfa;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Preview Section */
+    .preview-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.95rem;
+    }
+    
+    .preview-icon {
+        color: #10b981;
+    }
+    
+    /* Content Card */
+    .content-card {
+        background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 16px;
+        padding: 1.25rem;
+    }
+    
+    .content-label {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .content-value {
+        color: #ffffff;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    /* Primary Button Styling */
     .stButton > button {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%) !important;
         color: white !important;
         border: none !important;
-        border-radius: 14px !important;
+        border-radius: 16px !important;
         font-weight: 600 !important;
-        padding: 0.875rem 2rem !important;
-        font-size: 1rem !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        font-size: 1.05rem !important;
+        padding: 1rem 2rem !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         box-shadow: 
-            0 4px 14px rgba(16, 185, 129, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+            0 10px 40px rgba(99, 102, 241, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.2) !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-3px) scale(1.02) !important;
+        transform: translateY(-4px) scale(1.02) !important;
         box-shadow: 
-            0 8px 25px rgba(16, 185, 129, 0.5),
-            0 4px 8px rgba(0, 0, 0, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+            0 20px 60px rgba(99, 102, 241, 0.5),
+            0 8px 20px rgba(0, 0, 0, 0.25) !important;
     }
     
     .stButton > button:active {
-        transform: translateY(-1px) scale(0.98) !important;
+        transform: translateY(-2px) scale(0.98) !important;
     }
     
-    /* Download button with blue 3D effect */
+    /* Download Button */
     .stDownloadButton > button {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
         color: white !important;
-        border-radius: 14px !important;
+        border: none !important;
+        border-radius: 16px !important;
         font-weight: 600 !important;
-        padding: 0.875rem 2rem !important;
+        padding: 1rem 2rem !important;
         box-shadow: 
-            0 4px 14px rgba(59, 130, 246, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-        transition: all 0.3s ease !important;
+            0 10px 40px rgba(16, 185, 129, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        transition: all 0.4s ease !important;
     }
     
     .stDownloadButton > button:hover {
-        transform: translateY(-3px) !important;
+        transform: translateY(-4px) !important;
         box-shadow: 
-            0 8px 25px rgba(59, 130, 246, 0.5),
-            0 4px 8px rgba(0, 0, 0, 0.15) !important;
+            0 20px 60px rgba(16, 185, 129, 0.5),
+            0 8px 20px rgba(0, 0, 0, 0.25) !important;
     }
     
-    /* Selectbox styling */
+    /* Selectbox Styling */
     .stSelectbox > div > div {
-        background: rgba(255, 255, 255, 0.9) !important;
-        border-radius: 12px !important;
-        border: 1px solid rgba(203, 213, 225, 0.6) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: white !important;
     }
     
-    /* Text input styling */
+    .stSelectbox > div > div:hover {
+        border-color: rgba(99, 102, 241, 0.4) !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"] > div {
+        background: transparent !important;
+        color: white !important;
+    }
+    
+    /* Text Input Styling */
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea {
-        background: rgba(255, 255, 255, 0.95) !important;
-        border-radius: 12px !important;
-        border: 1px solid rgba(203, 213, 225, 0.6) !important;
-        box-shadow: 
-            inset 0 2px 4px rgba(0, 0, 0, 0.02),
-            0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: white !important;
+        padding: 1rem !important;
     }
     
     .stTextInput > div > div > input:focus,
     .stTextArea > div > div > textarea:focus {
-        border-color: #667eea !important;
-        box-shadow: 
-            0 0 0 3px rgba(102, 126, 234, 0.15),
-            inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
     }
     
-    /* Expander styling */
+    /* Expander Styling */
     .streamlit-expanderHeader {
-        background: rgba(255, 255, 255, 0.8) !important;
-        border-radius: 12px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
         font-weight: 600 !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     }
     
-    /* Info/Success/Warning boxes with glass effect */
+    .streamlit-expanderHeader:hover {
+        border-color: rgba(99, 102, 241, 0.3) !important;
+        background: rgba(99, 102, 241, 0.1) !important;
+    }
+    
+    .streamlit-expanderContent {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-top: none !important;
+        border-radius: 0 0 14px 14px !important;
+    }
+    
+    /* Alert Boxes */
     .stAlert {
-        background: rgba(255, 255, 255, 0.8) !important;
-        backdrop-filter: blur(8px) !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
     
-    /* Title styling */
-    h1 {
-        background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #db2777 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-weight: 800 !important;
+    /* Success Message */  
+    [data-testid="stAlert"][data-baseweb="notification"] {
+        background: rgba(16, 185, 129, 0.15) !important;
+        border: 1px solid rgba(16, 185, 129, 0.3) !important;
     }
     
-    /* Subtle animations */
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-5px); }
+    /* Info Message */
+    .stInfo {
+        background: rgba(99, 102, 241, 0.15) !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
     }
     
-    .floating {
-        animation: float 3s ease-in-out infinite;
+    /* Modern Divider */
+    .modern-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        margin: 2rem 0;
+        border: none;
+    }
+    
+    /* Label styling */
+    .stSelectbox label,
+    .stTextInput label,
+    .stTextArea label {
+        color: rgba(255, 255, 255, 0.7) !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Success indicator */
+    .success-badge {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-radius: 12px;
+        padding: 0.75rem 1.25rem;
+        color: #10b981;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Footer */
+    .footer-text {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.9rem;
+        margin-top: 3rem;
+        padding-bottom: 2rem;
+    }
+    
+    /* Metric override */
+    [data-testid="stMetricValue"] {
+        color: #a78bfa !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -277,46 +445,66 @@ if 'pptx_ready' not in st.session_state:
 # ============================================================================
 # HEADER
 # ============================================================================
-st.markdown("# 📝 Create Your Lesson")
-st.markdown("Generate professional TLAG PowerPoints in seconds")
+st.markdown("""
+<div class="page-header">
+    <h1 class="page-title">📝 Create Your Lesson</h1>
+    <p class="page-subtitle">Generate professional TLAG PowerPoints in seconds</p>
+</div>
+""", unsafe_allow_html=True)
 
-st.markdown("---")
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
 
 # ============================================================================
 # MODE SELECTION
 # ============================================================================
-st.markdown("### Choose Your Workflow")
+st.markdown("""
+<div class="step-header">
+    <div class="step-badge">0</div>
+    <span class="step-title">Choose Your Workflow</span>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
 with col1:
-    quick_active = "active" if st.session_state.mode == "quick" else ""
-    if st.button("⚡ Quick Download", use_container_width=True, key="quick_btn"):
+    quick_class = "active" if st.session_state.mode == "quick" else ""
+    st.markdown(f"""
+    <div class="mode-card {quick_class}">
+        <span class="mode-icon">⚡</span>
+        <div class="mode-title">Quick Download</div>
+        <div class="mode-desc">Select a ready-made lesson and download instantly. Best for complete lessons with no changes.</div>
+    </div>
+    """, unsafe_allow_html=True)
+    if st.button("Select Quick Mode", use_container_width=True, key="quick_btn"):
         st.session_state.mode = "quick"
         st.session_state.pptx_ready = None
         st.rerun()
-    st.markdown("**Select a ready-made lesson and download instantly.** Best for when you want a complete lesson with no changes.")
 
 with col2:
-    custom_active = "active" if st.session_state.mode == "custom" else ""
-    if st.button("✏️ Customise First", use_container_width=True, key="custom_btn"):
+    custom_class = "active" if st.session_state.mode == "custom" else ""
+    st.markdown(f"""
+    <div class="mode-card {custom_class}">
+        <span class="mode-icon">✏️</span>
+        <div class="mode-title">Customise First</div>
+        <div class="mode-desc">Edit lesson content before generating. Best for tailoring lessons to your class needs.</div>
+    </div>
+    """, unsafe_allow_html=True)
+    if st.button("Select Custom Mode", use_container_width=True, key="custom_btn"):
         st.session_state.mode = "custom"
         st.session_state.pptx_ready = None
         st.rerun()
-    st.markdown("**Edit lesson content before generating.** Best for when you want to tailor the lesson to your class.")
 
-# Show active mode indicator
-if st.session_state.mode == "quick":
-    st.info("⚡ **Quick Download Mode** - Select and download a ready-made lesson")
-else:
-    st.success("✏️ **Customise Mode** - Edit content before generating")
-
-st.markdown("---")
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
 
 # ============================================================================
-# STEP 1: TOPIC SELECTION (Same for both modes)
+# STEP 1: TOPIC SELECTION
 # ============================================================================
-st.markdown('<div class="section-header">📚 Step 1: Select Your Topic</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="step-header">
+    <div class="step-badge">1</div>
+    <span class="step-title">Select Your Topic</span>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
@@ -350,7 +538,12 @@ subtopic_id = subtopic_options.get(selected_subtopic) if subtopic_options else N
 # ============================================================================
 # STEP 2: LESSON SELECTION
 # ============================================================================
-st.markdown('<div class="section-header">📖 Step 2: Choose a Lesson</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="step-header">
+    <div class="step-badge">2</div>
+    <span class="step-title">Choose a Lesson</span>
+</div>
+""", unsafe_allow_html=True)
 
 available_lessons = get_all_available_lessons(subject, subtopic_id) if subtopic_id else []
 
@@ -358,7 +551,8 @@ if not available_lessons:
     st.warning("⚠️ No lessons available for this subtopic yet. Try a different topic!")
     st.stop()
 
-st.success(f"✅ **{len(available_lessons)} lesson(s) available**")
+st.markdown(f'<div class="success-badge">✅ {len(available_lessons)} lesson(s) available</div>', unsafe_allow_html=True)
+st.markdown("")
 
 lesson_options = [f"Lesson {l['number']}: {l['title']}" for l in available_lessons]
 selected_lesson = st.selectbox("Select lesson", lesson_options, label_visibility="collapsed")
@@ -370,6 +564,8 @@ if not lesson_data:
     st.error("Could not load lesson data")
     st.stop()
 
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
+
 # ============================================================================
 # MODE-SPECIFIC CONTENT
 # ============================================================================
@@ -378,30 +574,46 @@ if st.session_state.mode == "quick":
     # ========================================================================
     # QUICK DOWNLOAD MODE
     # ========================================================================
-    st.markdown('<div class="section-header">👁️ Lesson Preview</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="step-header">
+        <div class="step-badge">3</div>
+        <span class="step-title">Preview & Download</span>
+    </div>
+    """, unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.markdown("**🎯 Learning Outcome**")
+        st.markdown("""
+        <div class="glass-card">
+            <div class="glass-card-header">🎯 Learning Outcome</div>
+        </div>
+        """, unsafe_allow_html=True)
         st.info(lesson_data.get('learning_outcome', 'N/A'))
         
-        st.markdown("**🧠 Key Knowledge**")
+        st.markdown("""
+        <div class="glass-card">
+            <div class="glass-card-header">🧠 Key Knowledge</div>
+        </div>
+        """, unsafe_allow_html=True)
         for i, item in enumerate(lesson_data.get('to_know', [])[:5], 1):
-            st.markdown(f"{i}. {item}")
+            st.markdown(f"**{i}.** {item}")
         if len(lesson_data.get('to_know', [])) > 5:
             st.caption(f"+ {len(lesson_data.get('to_know', [])) - 5} more...")
     
     with col2:
-        st.markdown("**📋 Lesson Contents**")
+        st.markdown("""
+        <div class="glass-card">
+            <div class="glass-card-header">📋 Lesson Contents</div>
+        </div>
+        """, unsafe_allow_html=True)
         st.markdown(f"✓ {len(lesson_data.get('do_now', {}).get('questions', []))} Do Now questions")
         st.markdown("✓ I Do - Teacher explanation")
         st.markdown("✓ We Do - Guided practice")
         st.markdown(f"✓ {len(lesson_data.get('you_do', []))} You Do tasks")
         st.markdown("✓ Exit Ticket assessment")
     
-    st.markdown("---")
-    st.markdown('<div class="section-header">⬇️ Step 3: Download</div>', unsafe_allow_html=True)
+    st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -428,7 +640,12 @@ else:
     # ========================================================================
     # CUSTOMISE MODE
     # ========================================================================
-    st.markdown('<div class="section-header">✏️ Step 3: Customise Your Lesson</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="step-header">
+        <div class="step-badge">3</div>
+        <span class="step-title">Customise Your Lesson</span>
+    </div>
+    """, unsafe_allow_html=True)
     st.caption("Edit any section below. Your changes will be included in the generated PowerPoint.")
     
     # Learning Outcome
@@ -505,8 +722,14 @@ else:
         
         edited_exit_answer = st.text_input("Correct Answer", value=exit_data.get('answer', ''))
     
-    st.markdown("---")
-    st.markdown('<div class="section-header">⬇️ Step 4: Generate & Download</div>', unsafe_allow_html=True)
+    st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="step-header">
+        <div class="step-badge">4</div>
+        <span class="step-title">Generate & Download</span>
+    </div>
+    """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -551,5 +774,5 @@ else:
                     with st.expander("Error details"):
                         st.code(traceback.format_exc())
 
-st.markdown("---")
-st.caption("Built with ❤️ for GEMS Education Teachers")
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
+st.markdown('<p class="footer-text">Built with ❤️ for GEMS Education Teachers</p>', unsafe_allow_html=True)
